@@ -2,14 +2,70 @@
     "entries": [
         {
             "id": "1",
+            "tags": "no,の,ejefald,genitive,possessive,possession,ejerskab,particle,partikel",
             "title": {
                 "en": "no",
                 "ja": "の",
                 "da": "no"
             },
-            "description": {
-                "en": "",
-                "da": "Ejefald"
+            "descriptors": {
+                "en": "Particle, indicates possessive",
+                "da": "Partikel, Indikerer ejefald"
+            },
+            "descriptionShort": {
+                "en": "This particle is used between nouns to indicate possessiveness.",
+                "da": "Denne partikel bruges mellem navneord til at indikere ejefald mellem dem."
+            }
+        },
+        {
+            "id": "2",
+            "tags": "white,hvid,hvidt,shiroi,しろい,白い,colour,color,farve",
+            "title": {
+                "en": "white",
+                "ja": "白い (しろい)",
+                "da": "hvid"
+            },
+            "descriptors": {
+                "en": "I-adjective",
+                "da": "I-adjektiv"
+            },
+            "descriptionShort": {
+                "en": "The colour white. Something being white.",
+                "da": "Farven hvid. Noget er hvidt."
+            }
+        },
+        {
+            "id": "3",
+            "tags": "ようになる,youninaru,change,ændring,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+            "title": {
+                "en": "a change has taken place",
+                "ja": "V(plain)ようになる",
+                "da": "en ændring har fundet sted"
+            },
+            "descriptors": {
+                "en": "sentence ending expression",
+                "da": "sætningsafsluttende udtryk"
+            },
+            "descriptionShort": {
+                "en": "This pattern indicates a change which has taken place or will take place.",
+                "da": "Indikerer at en ændring har eller vil finde sted."
+            }
+        },
+        {
+            "id": "4",
+            "tags": "ばかり,bakari,finished,done,færdiggjort,gjort,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+            "title": {
+                "en": "have just done/finished something",
+                "ja": "V(plain past)ばかり",
+                "da": "har lige gjort/færdiggjort noget"
+            },
+            "descriptors": {
+                "en": "sentence ending expression",
+                "da": "sætningsafsluttende udtryk"
+            },
+            "descriptionShort": {
+                "en": "This pattern indicates that the object has just done or finished something.",
+                "da": "Indikerer at subjekt eller tema lige har gjort eller lige har færdiggjort noget."
             }
         }
     ]
