@@ -67,6 +67,40 @@
                 "en": "This pattern indicates that the object has just done or finished something.",
                 "da": "Indikerer at subjekt eller tema lige har gjort eller lige har færdiggjort noget."
             }
+        },
+        {
+            "id": "5",
+            "tags": "ところ,tokoro,about,about to,skal til,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+            "title": {
+                "en": "about to do something",
+                "ja": "V(plain)ところ",
+                "da": "skal til at gøre noget"
+            },
+            "descriptors": {
+                "en": "sentence ending expression",
+                "da": "sætningsafsluttende udtryk"
+            },
+            "descriptionShort": {
+                "en": "This pattern indicates the object is about to do something.",
+                "da": "Indikerer at subjekt eller tema skal til at gøre noget."
+            }
+        },
+        {
+            "id": "6",
+            "tags": "にくい,nikui,difficult,is difficult,svært,er svært,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+            "title": {
+                "en": "something is difficult to V",
+                "ja": "V(masu-stem)にくい",
+                "da": "det er svært at gøre V"
+            },
+            "descriptors": {
+                "en": "sentence ending expression",
+                "da": "sætningsafsluttende udtryk"
+            },
+            "descriptionShort": {
+                "en": "This pattern indicates that the verb is hard to do.",
+                "da": "Indikerer at verbet er noget der er svært at gøre."
+            }
         }
     ]
 }
