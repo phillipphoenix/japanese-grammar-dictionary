@@ -1,8 +1,12 @@
 import { FC } from "react";
 import styles from "../styles/components/NarrowContainer.module.css";
 
-const NarrowContainer: FC = ({ children }) => {
-  return <div className={`${styles.narrowContainer}`}>{children}</div>;
+export interface NarrowContainerProps {
+  className?: string;
+}
+
+const NarrowContainer: FC<NarrowContainerProps> = ({ children, className }) => {
+  return <div className={`${styles.narrowContainer} ${className}`}>{children}</div>;
 };
 
 export default NarrowContainer;
