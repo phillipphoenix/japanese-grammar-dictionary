@@ -20,6 +20,8 @@
   font-style: italic;
 }
 
+/* RESPONSIVE */
+
 /* Small phones */
 @media (max-width: 600px) {
   .cardHeader h2 {
