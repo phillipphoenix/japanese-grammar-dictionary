@@ -3,16 +3,17 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import NarrowContainer from "../../components/NarrowContainer";
 import Page from "../../components/Page";
+import { EntryType } from "../../types/api/entry";
 
 const Entry = () => {
   const router = useRouter();
-  const [entry, setEntry] = useState(null);
+  const [entry, setEntry] = useState<EntryType>(null);
 
   useEffect(() => {
     const { eid } = router.query;
     fetch(`/api/entry/${eid}`)
       .then((result) => result.json())
-      .then((entry) => {
+      .then((entry: EntryType) => {
         setEntry(entry);
       });
   }, [router]);
@@ -28,9 +29,9 @@ const Entry = () => {
         {entry && (
           <div>
             <h1>
-              {entry.title.ja} {entry.title.da}
+              {entry.title.ja} - {entry.title.da} <small>{entry.descriptors.da}</small>
             </h1>
-            <p>{entry.description.da}</p>
+            <p>{entry.descriptionShort.da}</p>
           </div>
         )}
       </NarrowContainer>
