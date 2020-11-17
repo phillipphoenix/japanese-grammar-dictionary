@@ -34,12 +34,13 @@ export default function Home() {
       return entries.slice(0, 10);
     }
     // Only return the 10 first entries that match the search.
+    const searchTrimmedLower = searchTrimmed.toLowerCase();
     const foundEntries = entries.filter((entry) => {
       return (
-        entry.tags.includes(searchTrimmed) ||
-        anyLocalisationIncludes(entry.title, searchTrimmed) ||
-        anyLocalisationIncludes(entry.descriptors, searchTrimmed) ||
-        anyLocalisationIncludes(entry.descriptionShort, searchTrimmed)
+        entry.tags.includes(searchTrimmedLower) ||
+        anyLocalisationIncludes(entry.title, searchTrimmedLower) ||
+        anyLocalisationIncludes(entry.descriptors, searchTrimmedLower) ||
+        anyLocalisationIncludes(entry.descriptionShort, searchTrimmedLower)
       );
     });
     return foundEntries.slice(0, 10);
