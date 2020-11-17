@@ -18,23 +18,6 @@
             }
         },
         {
-            "id": "2",
-            "tags": "white,hvid,hvidt,shiroi,しろい,白い,colour,color,farve",
-            "title": {
-                "en": "white",
-                "ja": "白い (しろい)",
-                "da": "hvid"
-            },
-            "descriptors": {
-                "en": "I-adjective",
-                "da": "I-adjektiv"
-            },
-            "descriptionShort": {
-                "en": "The colour white. Something being white.",
-                "da": "Farven hvid. Noget er hvidt."
-            }
-        },
-        {
             "id": "3",
             "tags": "ようになる,youninaru,change,ændring,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
             "title": {
