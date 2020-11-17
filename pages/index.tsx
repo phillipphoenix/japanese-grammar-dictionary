@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import NarrowContainer from "../components/NarrowContainer";
 import Page from "../components/Page";
@@ -7,10 +7,28 @@ import EntryCard from "../components/EntryCard";
 import { EntryType } from "../types/api/entry";
 import { anyLocalisationIncludes } from "../utils/EntryUtils";
 
+const filterEntries = (allEntries, searchTerm) => {
+  // If search is empty, take 10 first entries.
+  if (!searchTerm) {
+    return allEntries.slice(0, 10);
+  }
+  // Only return the 10 first entries that match the search.
+  const searchTermLower = searchTerm.toLowerCase();
+  const foundEntries = allEntries.filter((entry) => {
+    return (
+      entry.tags.includes(searchTermLower) ||
+      anyLocalisationIncludes(entry.title, searchTermLower) ||
+      anyLocalisationIncludes(entry.descriptors, searchTermLower) ||
+      anyLocalisationIncludes(entry.descriptionShort, searchTermLower)
+    );
+  });
+  return foundEntries.slice(0, 10);
+};
+
 export default function Home() {
   const [entries, setEntries] = useState<EntryType[]>([]);
   const [search, setSearch] = useState<string>("");
-  const [searchTrimmed, setSearchTrimmed] = useState<string>("");
+  const [filteredEntries, setFilteredEntries] = useState([]);
 
   useEffect(() => {
     fetch("/api/entries")
@@ -21,30 +39,11 @@ export default function Home() {
       });
   }, []);
 
+  // Update filtered entries based on entry list and search.
   useEffect(() => {
     const trimmedSearch = search.trim();
-    if (trimmedSearch !== searchTrimmed) {
-      setSearchTrimmed(trimmedSearch);
-    }
-  }, [search]);
-
-  const filteredEntries = () => {
-    // If search is empty, take 10 first entries.
-    if (!searchTrimmed) {
-      return entries.slice(0, 10);
-    }
-    // Only return the 10 first entries that match the search.
-    const searchTrimmedLower = searchTrimmed.toLowerCase();
-    const foundEntries = entries.filter((entry) => {
-      return (
-        entry.tags.includes(searchTrimmedLower) ||
-        anyLocalisationIncludes(entry.title, searchTrimmedLower) ||
-        anyLocalisationIncludes(entry.descriptors, searchTrimmedLower) ||
-        anyLocalisationIncludes(entry.descriptionShort, searchTrimmedLower)
-      );
-    });
-    return foundEntries.slice(0, 10);
-  };
+    setFilteredEntries(filterEntries(entries, trimmedSearch));
+  }, [entries, search]);
 
   return (
     <Page title="日本語 Grammar Dictionary" tabTitle="日本語 Grammar Dictionary">
@@ -57,19 +56,26 @@ export default function Home() {
             onChange={(evt) => setSearch(evt.target.value)}
           />
         </div>
-        <div id="entry-list" className={styles.entryList}>
-          {filteredEntries().map((entry) => (
-            <Link key={entry.id} href={`/entry/${encodeURIComponent(entry.id)}`}>
-              <div className={styles.entry}>
-                <EntryCard
-                  title={`${entry.title.ja} - ${entry.title.da}`}
-                  descriptors={entry.descriptors.da}
-                  description={entry.descriptionShort.da}
-                />
-              </div>
-            </Link>
-          ))}
-        </div>
+        {filteredEntries.length > 0 && (
+          <div id="entry-list" className={styles.entryList}>
+            {filteredEntries.map((entry) => (
+              <Link key={entry.id} href={`/entry/${encodeURIComponent(entry.id)}`}>
+                <div className={styles.entry}>
+                  <EntryCard
+                    title={`${entry.title.ja} - ${entry.title.da}`}
+                    descriptors={entry.descriptors.da}
+                    description={entry.descriptionShort.da}
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+        {filteredEntries.length === 0 && (
+          <div className={styles.noEntriesFoundContainer}>
+            <h3>No entries found...</h3>
+          </div>
+        )}
       </NarrowContainer>
     </Page>
   );

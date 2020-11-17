@@ -9,6 +9,7 @@
 }
 
 .searchArea {
+  flex-grow: 0;
   padding: 10px 0;
   border-bottom: 1px solid white;
   margin-bottom: 30px;
@@ -24,6 +25,7 @@
 
 .entryList {
   height: 100%;
+  padding: 0 0.75rem;
   overflow-y: auto;
 }
 
@@ -33,4 +35,19 @@
 
 .entryList .entry:hover {
   cursor: pointer;
+}
+
+.noEntriesFoundContainer h1,
+.noEntriesFoundContainer h2,
+.noEntriesFoundContainer h3 {
+  text-align: center;
+}
+
+/* RESPONSIVE */
+
+/* Large phones */
+@media (max-width: 767px) {
+  .entryList {
+    padding: 0;
+  }
 }
