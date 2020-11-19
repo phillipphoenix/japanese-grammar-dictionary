@@ -1,89 +1,140 @@
 {
-    "entries": [
-        {
-            "id": "1",
-            "tags": "no,の,ejefald,genitive,possessive,possession,ejerskab,particle,partikel",
-            "title": {
-                "en": "Indicates possessive",
-                "ja": "の",
-                "da": "Indikerer ejefald"
-            },
-            "descriptors": {
-                "en": "Particle, indicates possessive",
-                "da": "Partikel, Indikerer ejefald"
-            },
-            "descriptionShort": {
-                "en": "This particle is used between nouns to indicate possessiveness.",
-                "da": "Denne partikel bruges mellem navneord til at indikere ejefald mellem dem."
-            }
-        },
-        {
-            "id": "3",
-            "tags": "ようになる,youninaru,change,ændring,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
-            "title": {
-                "en": "a change has taken place",
-                "ja": "V(plain)ようになる",
-                "da": "en ændring har fundet sted"
-            },
-            "descriptors": {
-                "en": "sentence ending expression",
-                "da": "sætningsafsluttende udtryk"
-            },
-            "descriptionShort": {
-                "en": "This pattern indicates a change which has taken place or will take place.",
-                "da": "Indikerer at en ændring har eller vil finde sted."
-            }
-        },
-        {
-            "id": "4",
-            "tags": "ばかり,bakari,finished,done,færdiggjort,gjort,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
-            "title": {
-                "en": "have just done/finished something",
-                "ja": "V(plain past)ばかり",
-                "da": "har lige gjort/færdiggjort noget"
-            },
-            "descriptors": {
-                "en": "sentence ending expression",
-                "da": "sætningsafsluttende udtryk"
-            },
-            "descriptionShort": {
-                "en": "This pattern indicates that the object has just done or finished something.",
-                "da": "Indikerer at subjekt eller tema lige har gjort eller lige har færdiggjort noget."
-            }
-        },
-        {
-            "id": "5",
-            "tags": "ところ,tokoro,about,about to,skal til,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
-            "title": {
-                "en": "about to do something",
-                "ja": "V(plain)ところ",
-                "da": "skal til at gøre noget"
-            },
-            "descriptors": {
-                "en": "sentence ending expression",
-                "da": "sætningsafsluttende udtryk"
-            },
-            "descriptionShort": {
-                "en": "This pattern indicates the object is about to do something.",
-                "da": "Indikerer at subjekt eller tema skal til at gøre noget."
-            }
-        },
-        {
-            "id": "6",
-            "tags": "にくい,nikui,difficult,is difficult,svært,er svært,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
-            "title": {
-                "en": "something is difficult to V",
-                "ja": "V(masu-stem)にくい",
-                "da": "det er svært at gøre V"
-            },
-            "descriptors": {
-                "en": "sentence ending expression",
-                "da": "sætningsafsluttende udtryk"
-            },
-            "descriptionShort": {
-                "en": "This pattern indicates that the verb is hard to do.",
-                "da": "Indikerer at verbet er noget der er svært at gøre."
-            }
-        }
-    ]
+  "entries": [
+    {
+      "id": "1",
+      "tags": "no,の,ejefald,genitive,possessive,possession,ejerskab,particle,partikel",
+      "title": {
+        "en": "Indicates possessive",
+        "ja": "の",
+        "da": "Indikerer ejefald"
+      },
+      "descriptors": {
+        "en": "Particle, indicates possessive",
+        "da": "Partikel, Indikerer ejefald"
+      },
+      "descriptionShort": {
+        "en": "This particle is used between nouns to indicate possessiveness.",
+        "da": "Denne partikel bruges mellem navneord til at indikere ejefald mellem dem."
+      }
+    },
+    {
+      "id": "3",
+      "tags": "ようになる,youninaru,change,ændring,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+      "title": {
+        "en": "a change has taken place",
+        "ja": "V(plain)ようになる",
+        "da": "en ændring har fundet sted"
+      },
+      "descriptors": {
+        "en": "sentence ending expression",
+        "da": "sætningsafsluttende udtryk"
+      },
+      "descriptionShort": {
+        "en": "This pattern indicates a change which has taken place or will take place.",
+        "da": "Indikerer at en ændring har eller vil finde sted."
+      }
+    },
+    {
+      "id": "4",
+      "tags": "ばかり,bakari,finished,done,færdiggjort,gjort,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+      "title": {
+        "en": "have just done/finished something",
+        "ja": "V(plain past)ばかり",
+        "da": "har lige gjort/færdiggjort noget"
+      },
+      "descriptors": {
+        "en": "sentence ending expression",
+        "da": "sætningsafsluttende udtryk"
+      },
+      "descriptionShort": {
+        "en": "This pattern indicates that the object has just done or finished something.",
+        "da": "Indikerer at subjekt eller tema lige har gjort eller lige har færdiggjort noget."
+      }
+    },
+    {
+      "id": "5",
+      "tags": "ところ,tokoro,about,about to,skal til,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+      "title": {
+        "en": "about to do something",
+        "ja": "V(plain)ところ",
+        "da": "skal til at gøre noget"
+      },
+      "descriptors": {
+        "en": "sentence ending expression",
+        "da": "sætningsafsluttende udtryk"
+      },
+      "descriptionShort": {
+        "en": "This pattern indicates the object is about to do something.",
+        "da": "Indikerer at subjekt eller tema skal til at gøre noget."
+      }
+    },
+    {
+      "id": "6",
+      "tags": "にくい,nikui,difficult,is difficult,svært,er svært,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
+      "title": {
+        "en": "something is difficult to V",
+        "ja": "V(masu-stem)にくい",
+        "da": "det er svært at gøre V"
+      },
+      "descriptors": {
+        "en": "sentence ending expression",
+        "da": "sætningsafsluttende udtryk"
+      },
+      "descriptionShort": {
+        "en": "This pattern indicates that the verb is hard to do.",
+        "da": "Indikerer at verbet er noget der er svært at gøre."
+      }
+    },
+    {
+      "id": "7",
+      "tags": "なせ,nase,why,hvorfor",
+      "title": {
+        "en": "Why ",
+        "ja": "なせ",
+        "da": "hvorfor"
+      },
+      "descriptors": {
+        "en": "",
+        "da": ""
+      },
+      "descriptionShort": {
+        "en": "This word can be used to ask why.",
+        "da": "Dette ord kan bruges til at spørge hvorfor."
+      }
+    },
+    {
+      "id": "8",
+      "tags": "の,no,noun,navneord,navneform",
+      "title": {
+        "en": "Makes a noun",
+        "ja": "の",
+        "da": "Navneformsgiver"
+      },
+      "descriptors": {
+        "en": "particle",
+        "da": "partikel"
+      },
+      "descriptionShort": {
+        "en": "Makes a sentence into a noun. Can then be followed by for instance the は (ha) particle.",
+        "da": "Giver navneform til en sætning. Kan derefter efterfølges af fx partiklen は (ha)."
+      }
+    },
+    {
+      "id": "9",
+      "tags": "たら,tara,S1,S2,when,da,når",
+      "title": {
+        "en": "When S1, then S2",
+        "ja": "S1たらS2(past)",
+        "da": "Da S1, så S2"
+      },
+      "descriptors": {
+        "en": "Expression",
+        "da": "Udtryk"
+      },
+      "descriptionShort": {
+        "en": "When たら is followed by a sentence in the past tense it means \"when\".",
+        "da": "Når たら følges af en sætning i datid, betyder det \"da\"."
+      }
+    }
+  ]
 }
