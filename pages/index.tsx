@@ -3,7 +3,7 @@ import Link from "next/link";
 import NarrowContainer from "../components/NarrowContainer";
 import Page from "../components/Page";
 import styles from "../styles/Home.module.css";
-import EntryCard from "../components/EntryCard";
+import EntryCard, { EntryCardSkeleton } from "../components/EntryCard";
 import { EntryType } from "../types/api/entry";
 import { anyLocalisationIncludes } from "../utils/EntryUtils";
 
@@ -26,16 +26,19 @@ const filterEntries = (allEntries, searchTerm) => {
 };
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [entries, setEntries] = useState<EntryType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("/api/entries")
       .then((result) => result.json())
       .then((entryData) => entryData.entries as EntryType[])
       .then((entries) => {
         setEntries(entries);
+        setIsLoading(false);
       });
   }, []);
 
@@ -56,13 +59,25 @@ export default function Home() {
             onChange={(evt) => setSearch(evt.target.value)}
           />
         </div>
-        {filteredEntries.length > 0 && (
+        {isLoading && (
+          <div className={styles.noEntriesFoundContainer}>
+            {/* <h3>Loading entries...</h3> */}
+            <div id="entry-list" className={styles.entryList}>
+              {[...Array(3)].map((e, idx) => (
+                <div key={idx} className={styles.entry}>
+                  <EntryCardSkeleton />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {!isLoading && filteredEntries.length > 0 && (
           <div id="entry-list" className={styles.entryList}>
             {filteredEntries.map((entry) => (
               <Link key={entry.id} href={`/entry/${encodeURIComponent(entry.id)}`}>
                 <div className={styles.entry}>
                   <EntryCard
-                    title={`${entry.title.ja} - ${entry.title.da}`}
+                    title={`${entry.title.da}`}
                     descriptors={entry.descriptors.da}
                     description={entry.descriptionShort.da}
                   />
@@ -71,7 +86,7 @@ export default function Home() {
             ))}
           </div>
         )}
-        {filteredEntries.length === 0 && (
+        {!isLoading && filteredEntries.length === 0 && (
           <div className={styles.noEntriesFoundContainer}>
             <h3>No entries found...</h3>
           </div>
