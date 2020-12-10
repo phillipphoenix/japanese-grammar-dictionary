@@ -4,9 +4,8 @@
       "id": "1",
       "tags": "no,の,ejefald,genitive,possessive,possession,ejerskab,particle,partikel",
       "title": {
-        "en": "Indicates possessive",
-        "ja": "の",
-        "da": "Indikerer ejefald"
+        "en": "の - Indicates possessive",
+        "da": "の - Indikerer ejefald"
       },
       "descriptors": {
         "en": "Particle, indicates possessive",
@@ -21,9 +20,8 @@
       "id": "3",
       "tags": "ようになる,youninaru,change,ændring,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
       "title": {
-        "en": "a change has taken place",
-        "ja": "V(plain)ようになる",
-        "da": "en ændring har fundet sted"
+        "en": "V(plain)ようになる - a change has taken place",
+        "da": "V(plain)ようになる - en ændring har fundet sted"
       },
       "descriptors": {
         "en": "sentence ending expression",
@@ -38,9 +36,8 @@
       "id": "4",
       "tags": "ばかり,bakari,finished,done,færdiggjort,gjort,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
       "title": {
-        "en": "have just done/finished something",
-        "ja": "V(plain past)ばかり",
-        "da": "har lige gjort/færdiggjort noget"
+        "en": "V(plain past)ばかり - have just done/finished something",
+        "da": "V(plain past)ばかり - har lige gjort/færdiggjort noget"
       },
       "descriptors": {
         "en": "sentence ending expression",
@@ -55,9 +52,8 @@
       "id": "5",
       "tags": "ところ,tokoro,about,about to,skal til,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
       "title": {
-        "en": "about to do something",
-        "ja": "V(plain)ところ",
-        "da": "skal til at gøre noget"
+        "en": "V(plain)ところ - about to do something",
+        "da": "V(plain)ところ - skal til at gøre noget"
       },
       "descriptors": {
         "en": "sentence ending expression",
@@ -72,9 +68,8 @@
       "id": "6",
       "tags": "にくい,nikui,difficult,is difficult,svært,er svært,sau,afslutning,afsluttende,udtryk,expression,ending,pattern",
       "title": {
-        "en": "something is difficult to V",
-        "ja": "V(masu-stem)にくい",
-        "da": "det er svært at gøre V"
+        "en": "V(masu-stem)にくい - something is difficult to V",
+        "da": "V(masu-stem)にくい - det er svært at gøre V"
       },
       "descriptors": {
         "en": "sentence ending expression",
@@ -89,9 +84,8 @@
       "id": "7",
       "tags": "なせ,nase,why,hvorfor",
       "title": {
-        "en": "Why ",
-        "ja": "なせ",
-        "da": "hvorfor"
+        "en": "なせ - Why",
+        "da": "なせ - hvorfor"
       },
       "descriptors": {
         "en": "",
@@ -106,9 +100,8 @@
       "id": "8",
       "tags": "の,no,noun,navneord,navneform",
       "title": {
-        "en": "Makes a noun",
-        "ja": "の",
-        "da": "Navneformsgiver"
+        "en": "の - Makes a noun",
+        "da": "の - Navneformsgiver"
       },
       "descriptors": {
         "en": "particle",
@@ -123,9 +116,8 @@
       "id": "9",
       "tags": "たら,tara,S1,S2,when,da,når",
       "title": {
-        "en": "When S1, then S2",
-        "ja": "S1たらS2(past)",
-        "da": "Da S1, så S2"
+        "en": "S1たらS2(past) - When S1, then S2",
+        "da": "S1たらS2(past) - Da S1, så S2"
       },
       "descriptors": {
         "en": "Expression",
