@@ -1,6 +1,6 @@
 import { Row } from "coda-js/build/models";
-import { EntryType } from "../types/api/entry";
-import { Example } from "../types/api/example";
+import { EntryDto } from "../types/api/entryDto";
+import { ExampleDto } from "../types/api/exampleDto";
 
 export const DOC_ID = "JLcxuFVrLM";
 
@@ -12,8 +12,8 @@ export const ENTRIES_DESCRIPTORS = "c-tOEutHWdy3";
 export const ENTRIES_DESCRIPTION_SHORT = "c-3Gn4wVV2bK";
 export const ENTRIES_EXAMPLES = "c-SRJrXmcObY";
 
-export const mapToEntry = (row: Row): EntryType => {
-  return <EntryType>{
+export const mapToEntry = (row: Row): EntryDto => {
+  return <EntryDto>{
     id: row.id,
     tags: row.values[ENTRIES_TAGS],
     title: {
@@ -38,8 +38,8 @@ export const EXAMPLE_SENTENCE = "c-h-i94MSMFW";
 export const EXAMPLE_TRANSLATION = "c-R1uyV8Z1Dx";
 export const EXAMPLE_EXPLANATION = "c-02_uvYMMU9";
 
-export const mapToExample = (row: Row): Example => {
-  return <Example>{
+export const mapToExample = (row: Row): ExampleDto => {
+  return <ExampleDto>{
     id: row.id,
     sentence: row.values[EXAMPLE_SENTENCE],
     translation: row.values[EXAMPLE_TRANSLATION],
