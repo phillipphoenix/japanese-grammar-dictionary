@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import NarrowContainer from "../../components/NarrowContainer";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import Page from "../../components/Page";
-import { EntryType } from "../../types/api/entry";
+import { EntryDto } from "../../types/api/entryDto";
 
 const Entry = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [entry, setEntry] = useState<EntryType>(null);
+  const [entry, setEntry] = useState<EntryDto>(null);
 
   useEffect(() => {
     const { eid } = router.query;
@@ -20,7 +20,7 @@ const Entry = () => {
     setIsLoading(true);
     fetch(`/api/entry/${eid}`)
       .then((result) => result.json())
-      .then((entry: EntryType) => {
+      .then((entry: EntryDto) => {
         console.log("EntryData:", entry);
         setEntry(entry);
         setIsLoading(false);

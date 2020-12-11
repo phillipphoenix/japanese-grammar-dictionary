@@ -4,7 +4,7 @@ import NarrowContainer from "../components/NarrowContainer";
 import Page from "../components/Page";
 import styles from "../styles/Home.module.css";
 import EntryCard, { EntryCardSkeleton } from "../components/EntryCard";
-import { EntryType } from "../types/api/entry";
+import { EntryDto } from "../types/api/entryDto";
 import { anyLocalisationIncludes } from "../utils/EntryUtils";
 
 const filterEntries = (allEntries, searchTerm) => {
@@ -27,7 +27,7 @@ const filterEntries = (allEntries, searchTerm) => {
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [entries, setEntries] = useState<EntryType[]>([]);
+  const [entries, setEntries] = useState<EntryDto[]>([]);
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
 
@@ -35,7 +35,7 @@ export default function Home() {
     setIsLoading(true);
     fetch("/api/entries")
       .then((result) => result.json())
-      .then((entryData) => entryData.entries as EntryType[])
+      .then((entryData) => entryData.entries as EntryDto[])
       .then((entries) => {
         setEntries(entries);
         setIsLoading(false);
