@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import { Coda } from "coda-js";
 import { mapToEntry } from "../../utils/CodaUtils";
+import { EntryDto } from "../../types/api/entryDto";
 
 /**
  * Coda with API key.
@@ -14,13 +15,19 @@ const coda = new Coda("6aed1ad8-27fa-4f73-9576-26925d112a57");
 const DOC_ID = "JLcxuFVrLM";
 const ENTRIES_TABLE_ID = "Entries";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const table = await coda.getTable(DOC_ID, ENTRIES_TABLE_ID);
-  const rows = await table.listRows({
-    valueFormat: "simpleWithArrays",
-  });
+export const getEntries = (): Promise<EntryDto[]> => {
+  return coda
+    .listRows(DOC_ID, ENTRIES_TABLE_ID, {
+      valueFormat: "simpleWithArrays",
+    })
+    .then((entryRows) => {
+      const entries = entryRows.map((row) => mapToEntry(row));
+      return entries;
+    });
+};
 
-  const entries = rows.map((row) => mapToEntry(row));
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const entries = await getEntries();
 
   const entryData = {
     entries,

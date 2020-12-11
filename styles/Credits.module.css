@@ -1,0 +1,7 @@
+.credits a {
+  text-decoration: underline;
+}
+
+.credits a:hover {
+  opacity: 0.8;
+}
