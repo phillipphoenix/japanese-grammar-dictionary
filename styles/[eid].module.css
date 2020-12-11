@@ -22,3 +22,9 @@
   padding-left: 10px;
   border-left: 3px solid rgb(197, 197, 197);
 }
+
+.textSvgs {
+  transform: translateY(0.45rem);
+  padding: 0 0.2rem;
+  height: 1.5rem;
+}
