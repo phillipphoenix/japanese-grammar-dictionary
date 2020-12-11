@@ -10,6 +10,7 @@
   "dependencies": {
     "coda-js": "^4.0.0",
     "next": "10.0.0",
+    "next-pwa": "^5.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-loading-skeleton": "^2.1.1"
