@@ -6,6 +6,8 @@ import styles from "../styles/Home.module.css";
 import EntryCard, { EntryCardSkeleton } from "../components/EntryCard";
 import { EntryDto } from "../types/api/entryDto";
 import { anyLocalisationIncludes } from "../utils/EntryUtils";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { getEntries } from "./api/entries";
 
 const filterEntries = (allEntries, searchTerm) => {
   // If search is empty, take 10 first entries.
@@ -25,22 +27,9 @@ const filterEntries = (allEntries, searchTerm) => {
   return foundEntries.slice(0, 10);
 };
 
-export default function Home() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [entries, setEntries] = useState<EntryDto[]>([]);
+export default function Home({ entries }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetch("/api/entries")
-      .then((result) => result.json())
-      .then((entryData) => entryData.entries as EntryDto[])
-      .then((entries) => {
-        setEntries(entries);
-        setIsLoading(false);
-      });
-  }, []);
 
   // Update filtered entries based on entry list and search.
   useEffect(() => {
@@ -59,19 +48,7 @@ export default function Home() {
             onChange={(evt) => setSearch(evt.target.value)}
           />
         </div>
-        {isLoading && (
-          <div className={styles.noEntriesFoundContainer}>
-            {/* <h3>Loading entries...</h3> */}
-            <div id="entry-list" className={styles.entryList}>
-              {[...Array(3)].map((e, idx) => (
-                <div key={idx} className={styles.entry}>
-                  <EntryCardSkeleton />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {!isLoading && filteredEntries.length > 0 && (
+        {filteredEntries.length > 0 && (
           <div id="entry-list" className={styles.entryList}>
             {filteredEntries.map((entry) => (
               <Link key={entry.id} href={`/entry/${encodeURIComponent(entry.id)}`}>
@@ -79,14 +56,14 @@ export default function Home() {
                   <EntryCard
                     title={`${entry.title.da}`}
                     descriptors={entry.descriptors.da}
-                    description={entry.descriptionShort.da}
+                    descriptionShort={entry.descriptionShort.da}
                   />
                 </div>
               </Link>
             ))}
           </div>
         )}
-        {!isLoading && filteredEntries.length === 0 && (
+        {filteredEntries.length === 0 && (
           <div className={styles.noEntriesFoundContainer}>
             <h3>No entries found...</h3>
           </div>
@@ -95,3 +72,13 @@ export default function Home() {
     </Page>
   );
 }
+
+// Server side render with all entries at build time.
+export const getStaticProps: GetStaticProps = async (context) => {
+  const entries = await getEntries();
+
+  return {
+    props: { entries },
+    revalidate: 60 * 10, // Rerender every 10 minutes (upon request).
+  };
+};

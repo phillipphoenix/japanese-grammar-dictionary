@@ -1,41 +1,34 @@
 import { FC } from "react";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import styles from "../styles/components/EntryCard.module.css";
+import { ExampleData } from "../types/components/exampleData";
+import { Card, CardBody, CardHeader, CardSkeleton } from "./Card";
 
 export interface EntryCardProps {
+  // Data props.
   title: string;
+  tags?: string[];
   descriptors?: string;
-  description: string;
+  descriptionShort: string;
+  examples?: ExampleData[];
+  // Other.
+  className?: string;
 }
 
-const EntryCard: FC<EntryCardProps> = ({ title, descriptors, description }) => {
+const EntryCard: FC<EntryCardProps> = ({ title, descriptors, descriptionShort, className }) => {
   return (
-    <div className={`${styles.entryCard}`}>
-      <div className={styles.cardHeader}>
+    <Card className={className}>
+      <CardHeader>
         <h2>
-          {title} <small className={styles.descriptors}>{descriptors}</small>
+          {title} {descriptors && <small className={styles.descriptors}>{descriptors}</small>}
         </h2>
-      </div>
-      <hr />
-      <div className={styles.cardBody}>{description}</div>
-    </div>
+      </CardHeader>
+      <CardBody>{descriptionShort}</CardBody>
+    </Card>
   );
 };
 
 export const EntryCardSkeleton: FC = () => {
-  return (
-    <div className={`${styles.entryCard}`}>
-      <SkeletonTheme color="#dedede" highlightColor="#c7c7c7">
-        <div className={styles.cardHeader}>
-          <h2>
-            <Skeleton />
-          </h2>
-        </div>
-        <hr />
-        <Skeleton count={3} />
-      </SkeletonTheme>
-    </div>
-  );
+  return <CardSkeleton hasHeader={true} />;
 };
 
 export default EntryCard;

@@ -1,33 +1,5 @@
-.entryCard {
-  background: #eeeeee;
-  border-radius: 5px;
-  box-shadow: 0px 5px 10px 5px #000000a6;
-  color: #1d1d1d;
-
-  padding: 1rem;
-}
-
-.cardHeader h1,
-.cardHeader h2,
-.cardHeader h3 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-}
-
-.cardHeader h1 .descriptors,
-.cardHeader h2 .descriptors {
+h1 .descriptors,
+h2 .descriptors {
   font-size: 0.5em;
   font-style: italic;
-}
-
-/* RESPONSIVE */
-
-/* Small phones */
-@media (max-width: 600px) {
-  .cardHeader h2 {
-    font-size: 1.2rem;
-  }
-  .cardBody {
-    font-size: 0.9rem;
-  }
 }

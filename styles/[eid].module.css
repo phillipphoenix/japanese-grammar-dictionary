@@ -1,0 +1,24 @@
+.cardList {
+  margin-top: 2rem;
+  height: 100%;
+  padding: 0 0.75rem;
+  overflow-y: auto;
+}
+
+.cardList .card {
+  margin-bottom: 2rem;
+}
+
+.cardList .card .example {
+  margin-bottom: 1.3rem;
+}
+
+.cardList .card .example p {
+  margin: 0 0;
+}
+
+.cardList .card .example p.explanation {
+  margin: 0.5rem 0.5rem;
+  padding-left: 10px;
+  border-left: 3px solid rgb(197, 197, 197);
+}

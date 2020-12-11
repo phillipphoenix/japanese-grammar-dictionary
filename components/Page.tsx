@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { FC } from "react";
 import styles from "../styles/components/Page.module.css";
 
@@ -18,7 +19,12 @@ const Page: FC<PageProps> = ({ children, title, tabTitle }) => {
         <h1>{title}</h1>
       </header>
       <main className={styles.main}>{children}</main>
-      <footer className={styles.footer}>Made with ☕ by Phillip</footer>
+      <footer className={styles.footer}>
+        <p>Made with ☕ by Phillip</p>
+        <p>
+          <Link href="/credits">Go to credits page</Link>
+        </p>
+      </footer>
     </div>
   );
 };
