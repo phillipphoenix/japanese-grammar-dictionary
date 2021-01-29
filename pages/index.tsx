@@ -4,10 +4,12 @@ import NarrowContainer from "../components/NarrowContainer";
 import Page from "../components/Page";
 import styles from "../styles/Home.module.css";
 import EntryCard, { EntryCardSkeleton } from "../components/EntryCard";
-import { EntryDto } from "../types/api/entryDto";
 import { anyLocalisationIncludes } from "../utils/EntryUtils";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getEntries } from "./api/entries";
+
+import { Icon, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import { MdSearch } from "react-icons/md";
 
 const filterEntries = (allEntries, searchTerm) => {
   // If search is empty, take 10 first entries.
@@ -41,12 +43,18 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
     <Page title="日本語 Grammar Dictionary" tabTitle="日本語 Grammar Dictionary">
       <NarrowContainer className={styles.container}>
         <div id="search-area" className={styles.searchArea}>
-          <input
-            type="text"
-            placeholder="Search here"
-            value={search}
-            onChange={(evt) => setSearch(evt.target.value)}
-          />
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<Icon as={MdSearch} color="gray.300" />}
+            />
+            <Input
+              type="text"
+              placeholder="Search here"
+              value={search}
+              onChange={(evt) => setSearch(evt.target.value)}
+            />
+          </InputGroup>
         </div>
         {filteredEntries.length > 0 && (
           <div id="entry-list" className={styles.entryList}>

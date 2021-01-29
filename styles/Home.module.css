@@ -15,13 +15,13 @@
   margin-bottom: 30px;
 }
 
-.searchArea input {
+/* .searchArea input {
   width: 100%;
   height: 40px;
   padding: 5px;
   border: 5px solid black;
   font-size: 1.1rem;
-}
+} */
 
 .entryList {
   height: 100%;
