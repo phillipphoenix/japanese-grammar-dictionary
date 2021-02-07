@@ -25,12 +25,8 @@
   overflow-y: auto;
 }
 
-.entryList .entry {
+.entry {
   margin-bottom: 2rem;
-}
-
-.entryList .entry:hover {
-  cursor: pointer;
 }
 
 .noEntriesFoundContainer h1,

@@ -4,10 +4,12 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import styles from "../../styles/[eid].module.css";
 import NarrowContainer from "../../components/NarrowContainer";
 import Page from "../../components/Page";
+import { Button } from "@chakra-ui/react";
 import EntryCard, { EntryCardSkeleton } from "../../components/EntryCard";
-import { Card, CardBody, CardHeader } from "../../components/Card";
+import { Card, CardBody, CardHeader } from "../../components/Card/Card";
 import { getEntry } from "../api/entry/[eid]";
 import { getEntries } from "../api/entries";
+import { MdArrowBack } from "react-icons/md";
 
 const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
@@ -17,7 +19,9 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
       <NarrowContainer>
         <div>
           <Link href="/">
-            <a>Back</a>
+            <Button leftIcon={<MdArrowBack />} color="gray">
+              Back
+            </Button>
           </Link>
         </div>
 
