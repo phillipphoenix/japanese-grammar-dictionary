@@ -8,7 +8,6 @@ import EntryCard, { EntryCardSkeleton } from "../../components/EntryCard";
 import { Card, CardBody, CardHeader } from "../../components/Card";
 import { getEntry } from "../api/entry/[eid]";
 import { getEntries } from "../api/entries";
-import ArrowLeft from "../../svgs/ArrowLeft";
 
 const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
@@ -18,9 +17,7 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
       <NarrowContainer>
         <div>
           <Link href="/">
-            <a>
-              <ArrowLeft className={styles.textSvgs} /> Back
-            </a>
+            <a>Back</a>
           </Link>
         </div>
 

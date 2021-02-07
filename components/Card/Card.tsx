@@ -1,7 +1,7 @@
 import { Box, Divider, Heading, Text } from "@chakra-ui/react";
 import { FC } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import styles from "../styles/components/Card.module.css";
+import styles from "./Card.module.css";
 
 export interface CardProps {
   className?: string;
@@ -20,7 +20,9 @@ export interface CardHeaderProps {}
 export const CardHeader: FC<CardHeaderProps> = ({ children }) => {
   return (
     <>
-      <div className={styles.cardHeader}>{children}</div>
+      <Heading as="h2" size="md" className={styles.cardHeader}>
+        {children}
+      </Heading>
       <Divider />
     </>
   );

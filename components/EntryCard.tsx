@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styles from "../styles/components/EntryCard.module.css";
+import styles from "./EntryCard.module.css";
 import { ExampleData } from "../types/components/exampleData";
 import { Card, CardBody, CardHeader, CardSkeleton } from "./Card";
 
