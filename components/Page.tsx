@@ -2,7 +2,7 @@ import { Center, Container, Heading } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import { FC } from "react";
-//import styles from "../styles/components/Page.module.css";
+//import styles from "./Page.module.css";
 
 export interface PageProps {
   title: string;

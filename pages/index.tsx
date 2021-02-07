@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import NarrowContainer from "../components/NarrowContainer";
 import Page from "../components/Page";
 import styles from "../styles/Home.module.css";
 import { Card, CardBody, CardHeader } from "../components/Card/Card";
@@ -8,8 +7,17 @@ import { anyLocalisationIncludes } from "../utils/EntryUtils";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getEntries } from "./api/entries";
 
-import { Icon, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import { MdSearch } from "react-icons/md";
+import {
+  Box,
+  Wrap,
+  WrapItem,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Button,
+} from "@chakra-ui/react";
+import { MdSearch, MdLibraryBooks } from "react-icons/md";
 import Descriptor from "../components/Descriptor/Descriptor";
 
 const filterEntries = (allEntries, searchTerm) => {
@@ -59,7 +67,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
         </InputGroup>
       </div>
       {filteredEntries.length > 0 && (
-        <div id="entry-list" className={styles.entryList}>
+        <Box id="entry-list" className={styles.entryList}>
           {filteredEntries.map((entry) => (
             <Card className={styles.entry}>
               <CardHeader>
@@ -68,7 +76,15 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
               </CardHeader>
               <CardBody>
                 <div>{entry.descriptionShort.da}</div>
-                <div></div>
+                <Wrap p="5px" justify="flex-end">
+                  <WrapItem>
+                    <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
+                      <Button rightIcon={<MdLibraryBooks />} color="gray">
+                        Read more
+                      </Button>
+                    </Link>
+                  </WrapItem>
+                </Wrap>
               </CardBody>
             </Card>
             // <Link key={entry.id} href={`/entry/${encodeURIComponent(entry.id)}`}>
@@ -81,7 +97,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
             //   </div>
             // </Link>
           ))}
-        </div>
+        </Box>
       )}
       {filteredEntries.length === 0 && (
         <div className={styles.noEntriesFoundContainer}>

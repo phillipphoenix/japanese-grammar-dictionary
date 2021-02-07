@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styles from "../styles/components/NarrowContainer.module.css";
+import styles from "./NarrowContainer.module.css";
 
 export interface NarrowContainerProps {
   className?: string;

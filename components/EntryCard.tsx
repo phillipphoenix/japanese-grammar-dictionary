@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styles from "./EntryCard.module.css";
 import { ExampleData } from "../types/components/exampleData";
-import { Card, CardBody, CardHeader, CardSkeleton } from "./Card";
+import { Card, CardBody, CardHeader, CardSkeleton } from "./Card/Card";
 
 export interface EntryCardProps {
   // Data props.
