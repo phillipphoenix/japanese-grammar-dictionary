@@ -19,9 +19,7 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
       <NarrowContainer>
         <div>
           <Link href="/">
-            <Button leftIcon={<MdArrowBack />} color="gray">
-              Back
-            </Button>
+            <Button leftIcon={<MdArrowBack />}>Back</Button>
           </Link>
         </div>
 

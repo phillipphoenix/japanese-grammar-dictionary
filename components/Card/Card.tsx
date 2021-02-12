@@ -23,7 +23,7 @@ export const CardHeader: FC<CardHeaderProps> = ({ children }) => {
       <Heading as="h2" size="md" className={styles.cardHeader}>
         {children}
       </Heading>
-      <Divider />
+      <Divider mt="2" mb="2" />
     </>
   );
 };
