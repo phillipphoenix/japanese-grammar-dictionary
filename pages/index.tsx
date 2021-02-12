@@ -3,20 +3,23 @@ import Link from "next/link";
 import Page from "../components/Page";
 import styles from "../styles/Home.module.css";
 import { Card, CardBody, CardHeader } from "../components/Card/Card";
-import { anyLocalisationIncludes } from "../utils/EntryUtils";
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { getEntries } from "./api/entries";
-
 import {
   Box,
-  Wrap,
-  WrapItem,
+  Button,
+  Divider,
+  Flex,
+  Heading,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
-  Button,
+  Spacer,
+  Text,
 } from "@chakra-ui/react";
+import { anyLocalisationIncludes } from "../utils/EntryUtils";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { getEntries } from "./api/entries";
+
 import { MdSearch, MdLibraryBooks } from "react-icons/md";
 import Descriptor from "../components/Descriptor/Descriptor";
 
@@ -50,7 +53,6 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
 
   return (
     <Page title="日本語 Grammar Dictionary" tabTitle="日本語 Grammar Dictionary">
-      {/* <NarrowContainer className={styles.container}> */}
       <div id="search-area" className={styles.searchArea}>
         <InputGroup className={styles.searchAreaInputGroup}>
           <InputLeftElement
@@ -59,7 +61,6 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
           />
           <Input
             type="text"
-            variant="outline"
             placeholder="Search here"
             value={search}
             onChange={(evt) => setSearch(evt.target.value)}
@@ -69,33 +70,22 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
       {filteredEntries.length > 0 && (
         <Box id="entry-list" className={styles.entryList}>
           {filteredEntries.map((entry) => (
-            <Card className={styles.entry}>
-              <CardHeader>
+            <Box mb="5" p={5} shadow="md" bg="white" rounded="md">
+              <Heading as="h2" size="md" className={styles.cardHeader}>
                 {entry.title.da}{" "}
                 {entry.descriptors.da && <Descriptor text={entry.descriptors.da} />}
-              </CardHeader>
-              <CardBody>
-                <div>{entry.descriptionShort.da}</div>
-                <Wrap p="5px" justify="flex-end">
-                  <WrapItem>
-                    <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
-                      <Button rightIcon={<MdLibraryBooks />} color="gray">
-                        Read more
-                      </Button>
-                    </Link>
-                  </WrapItem>
-                </Wrap>
-              </CardBody>
-            </Card>
-            // <Link key={entry.id} href={`/entry/${encodeURIComponent(entry.id)}`}>
-            //   <div className={styles.entry}>
-            //     <EntryCard
-            //       title={`${entry.title.da}`}
-            //       descriptors={entry.descriptors.da}
-            //       descriptionShort={entry.descriptionShort.da}
-            //     />
-            //   </div>
-            // </Link>
+              </Heading>
+              <Divider mt="2" mb="2" />
+              <Box>{entry.descriptionShort.da}</Box>
+              <Flex p="5px">
+                <Spacer />
+                <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
+                  <Button rightIcon={<MdLibraryBooks />} colorScheme="gray">
+                    Read more
+                  </Button>
+                </Link>
+              </Flex>
+            </Box>
           ))}
         </Box>
       )}
@@ -104,7 +94,6 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
           <h3>No entries found...</h3>
         </div>
       )}
-      {/* </NarrowContainer> */}
     </Page>
   );
 }
