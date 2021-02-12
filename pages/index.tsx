@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { anyLocalisationIncludes } from "../utils/EntryUtils";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { getEntries } from "./api/entries";
+import { getEntries, getEntriesFb } from "./api/entries";
 
 import { MdSearch, MdLibraryBooks } from "react-icons/md";
 import Descriptor from "../components/Descriptor/Descriptor";
@@ -33,15 +33,17 @@ const filterEntries = (allEntries, searchTerm) => {
   const foundEntries = allEntries.filter((entry) => {
     return (
       entry.tags.includes(searchTermLower) ||
-      anyLocalisationIncludes(entry.title, searchTermLower) ||
-      anyLocalisationIncludes(entry.descriptors, searchTermLower) ||
-      anyLocalisationIncludes(entry.descriptionShort, searchTermLower)
+      entry.title.includes(searchTermLower) ||
+      entry.descriptors.includes(searchTermLower) ||
+      entry.summary.includes(searchTermLower)
     );
   });
   return foundEntries.slice(0, 10);
 };
 
 export default function Home({ entries }: InferGetStaticPropsType<typeof getStaticProps>) {
+  console.log("ENTRIES", entries);
+
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
 
@@ -53,7 +55,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
 
   return (
     <Page title="日本語 Grammar Dictionary" tabTitle="日本語 Grammar Dictionary">
-      <div id="search-area" className={styles.searchArea}>
+      <Box id="search-area" className={styles.searchArea}>
         <InputGroup className={styles.searchAreaInputGroup}>
           <InputLeftElement
             pointerEvents="none"
@@ -66,17 +68,16 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
             onChange={(evt) => setSearch(evt.target.value)}
           />
         </InputGroup>
-      </div>
+      </Box>
       {filteredEntries.length > 0 && (
         <Box id="entry-list" className={styles.entryList}>
           {filteredEntries.map((entry) => (
-            <Box mb="5" p={5} shadow="md" bg="white" rounded="md">
+            <Box key={entry.id} mb="5" p={5} shadow="md" bg="white" rounded="md">
               <Heading as="h2" size="md" className={styles.cardHeader}>
-                {entry.title.da}{" "}
-                {entry.descriptors.da && <Descriptor text={entry.descriptors.da} />}
+                {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
               </Heading>
               <Divider mt="2" mb="2" />
-              <Box>{entry.descriptionShort.da}</Box>
+              <Box>{entry.summary}</Box>
               <Flex p="5px">
                 <Spacer />
                 <Link href={`/entry/${encodeURIComponent(entry.id)}`}>

@@ -12,6 +12,7 @@
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "coda-js": "^4.0.0",
+    "firebase": "^8.2.7",
     "framer-motion": "^3.2.2-rc.1",
     "next": "10.0.0",
     "next-pwa": "^5.0.0",
