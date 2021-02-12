@@ -2,28 +2,21 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { Coda } from "coda-js";
-import { mapToEntry } from "../../utils/CodaUtils";
+import { firebase } from "../../utils/firebase";
+
 import { EntryDto } from "../../types/api/entryDto";
 
-/**
- * Coda with API key.
- */
-const coda = new Coda("6aed1ad8-27fa-4f73-9576-26925d112a57");
+var db = firebase.firestore();
 
-// Document and table IDs/Names
-const DOC_ID = "JLcxuFVrLM";
-const ENTRIES_TABLE_ID = "Entries";
+export const getEntries = async (): Promise<EntryDto[]> => {
+  const ref = db.collection("entries");
+  const snapshot = await ref.get();
+  const entries = snapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
 
-export const getEntries = (): Promise<EntryDto[]> => {
-  return coda
-    .listRows(DOC_ID, ENTRIES_TABLE_ID, {
-      valueFormat: "simpleWithArrays",
-    })
-    .then((entryRows) => {
-      const entries = entryRows.map((row) => mapToEntry(row));
-      return entries;
-    });
+  return entries;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
