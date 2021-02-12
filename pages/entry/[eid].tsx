@@ -4,15 +4,13 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import styles from "../../styles/[eid].module.css";
 import Page from "../../components/Page";
 import { Box, Button, Divider, Heading } from "@chakra-ui/react";
-import { getEntry, getEntryFb } from "../api/entry/[eid]";
+import { getEntry } from "../api/entry/[eid]";
 import { getEntries } from "../api/entries";
 import { MdArrowBack } from "react-icons/md";
 import Descriptor from "../../components/Descriptor/Descriptor";
 
 const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
-
-  console.log(entry);
 
   return (
     <Page title="日本語 Grammar Entry" tabTitle="Entry: eid">
@@ -73,7 +71,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const eid = context.params.eid as string;
 
-  const entry = await getEntryFb(eid);
+  const entry = await getEntry(eid);
 
   return {
     props: { entry },
