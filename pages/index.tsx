@@ -42,8 +42,6 @@ const filterEntries = (allEntries, searchTerm) => {
 };
 
 export default function Home({ entries }: InferGetStaticPropsType<typeof getStaticProps>) {
-  console.log("ENTRIES", entries);
-
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
 
