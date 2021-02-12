@@ -15,7 +15,7 @@ export const getEntry = async (entryId: string): Promise<EntryDto> => {
     if (!doc.exists) {
       throw new Error(`Entry with ID ${entryId} was not found.`);
     }
-    return {
+    return <EntryDto>{
       ...doc.data(),
       id: doc.id,
     };
