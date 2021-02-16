@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import Head from "next/head";
+import { analytics } from "../utils/firebase";
 import "../styles/globals.css";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
@@ -18,6 +20,13 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    // Init firebase analytics, if prod environment.
+    if (process.env.NODE_ENV === "production") {
+      analytics();
+    }
+  }, []);
+
   return (
     <>
       <Head>
