@@ -16,6 +16,7 @@ import {
   InputGroup,
   InputLeftElement,
   Button,
+  useToken,
 } from "@chakra-ui/react";
 import { MdSearch, MdLibraryBooks } from "react-icons/md";
 import Descriptor from "../components/Descriptor/Descriptor";
@@ -59,7 +60,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
           />
           <Input
             type="text"
-            variant="outline"
+            bg="white"
             placeholder="Search here"
             value={search}
             onChange={(evt) => setSearch(evt.target.value)}
@@ -75,13 +76,13 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
                 {entry.descriptors.da && <Descriptor text={entry.descriptors.da} />}
               </CardHeader>
               <CardBody>
-                <div>{entry.descriptionShort.da}</div>
-                <Wrap p="5px" justify="flex-end">
+                <Box paddingTop={2} paddingBottom={2}>
+                  {entry.descriptionShort.da}
+                </Box>
+                <Wrap paddingTop={2} paddingBottom={2} justify="flex-end">
                   <WrapItem>
                     <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
-                      <Button rightIcon={<MdLibraryBooks />} color="gray">
-                        Read more
-                      </Button>
+                      <Button rightIcon={<MdLibraryBooks color="black" />}>Read more</Button>
                     </Link>
                   </WrapItem>
                 </Wrap>
