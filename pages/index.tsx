@@ -16,7 +16,6 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import { anyLocalisationIncludes } from "../utils/EntryUtils";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getEntries } from "./api/entries";
 
@@ -54,7 +53,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
   return (
     <Page title="日本語 Grammar Dictionary" tabTitle="日本語 Grammar Dictionary">
       <Box id="search-area" className={styles.searchArea}>
-        <InputGroup className={styles.searchAreaInputGroup}>
+        <InputGroup>
           <InputLeftElement
             pointerEvents="none"
             children={<Icon as={MdSearch} color="gray.300" />}
@@ -62,6 +61,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
           <Input
             type="text"
             placeholder="Search here"
+            backgroundColor="white"
             value={search}
             onChange={(evt) => setSearch(evt.target.value)}
           />
