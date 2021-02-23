@@ -6,6 +6,9 @@ import "firebase/analytics";
 // Add the Firebase products that you want to use
 import "firebase/firestore";
 
+// Add authentication.
+import "firebase/auth";
+
 /*
 Copy/paste your *client-side* Firebase credentials below. 
 To get these, go to the Firebase Console > open your project > Gear Icon >
@@ -31,6 +34,10 @@ try {
     console.error("Firebase initialization error", err.stack);
   }
 }
+
+// Part of session based auth.
+// As httpOnly cookies are to be used, do not persist any state client side.
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 
 const analytics = firebase.analytics;
 export { firebase, analytics };

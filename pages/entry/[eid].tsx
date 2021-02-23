@@ -4,7 +4,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import styles from "../../styles/[eid].module.css";
 import Page from "../../components/Page";
 import { Box, Button, Divider, Heading } from "@chakra-ui/react";
-import { getEntry } from "../api/entry/[eid]";
+import { fetchEntry } from "../api/entry/[eid]";
 import { getEntries } from "../api/entries";
 import { MdArrowBack } from "react-icons/md";
 import Descriptor from "../../components/Descriptor/Descriptor";
@@ -71,7 +71,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const eid = context.params.eid as string;
 
-  const entry = await getEntry(eid);
+  const entry = await fetchEntry(eid);
 
   return {
     props: { entry },
