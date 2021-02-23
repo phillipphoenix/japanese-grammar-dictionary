@@ -7,7 +7,7 @@ import { EntryDto } from "../../../types/api/entryDto";
 
 var db = firebase.firestore();
 
-export const getEntry = async (entryId: string): Promise<EntryDto> => {
+export const fetchEntry = async (entryId: string): Promise<EntryDto> => {
   const ref = db.collection("entries");
   const docRef = ref.doc(entryId);
 
@@ -22,10 +22,11 @@ export const getEntry = async (entryId: string): Promise<EntryDto> => {
   });
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+// -- GET -- Fetch entry.
+const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   const entryId = <string>req.query.eid;
 
-  const entry = await getEntry(entryId);
+  const entry = await fetchEntry(entryId);
 
   if (!entry) {
     res.statusCode = 404;
@@ -33,5 +34,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } else {
     res.statusCode = 200;
     res.json(entry);
+  }
+};
+
+// -- POST -- Create entry
+
+// -- PUT -- Update entry
+
+// -- DELETE -- Delete entry
+
+// -- REQUEST RECEIVER --
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === "GET") {
+    getEntry(req, res);
+    return;
   }
 };
