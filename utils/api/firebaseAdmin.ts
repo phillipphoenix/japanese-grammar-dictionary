@@ -5,9 +5,12 @@ import serviceAccountJson from "./firebaseAdminCredentials";
 
 const serviceAccount = serviceAccountJson as ServiceAccount;
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+// Only initialise, if not already done.
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
 
 const firebaseAdmin = admin;
 
