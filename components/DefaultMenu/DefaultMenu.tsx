@@ -3,7 +3,15 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import firebase from "firebase";
 import { useAuth } from "../../Providers/AuthProvider";
-import { Icon, IconButton, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  Icon,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { MdAdd, MdMenu, MdPerson } from "react-icons/md";
 
 interface DefaultMenuProps {
@@ -16,6 +24,8 @@ interface DefaultMenuProps {
 const DefaultMenu: FC<DefaultMenuProps> = ({ logoutDestination }) => {
   const { user } = useAuth();
   const { reload, push } = useRouter();
+
+  const menuSize = useBreakpointValue({ base: "xs", md: "sm" });
 
   const onLogOut = () => {
     firebase
@@ -31,13 +41,13 @@ const DefaultMenu: FC<DefaultMenuProps> = ({ logoutDestination }) => {
   };
 
   return (
-    <Menu>
+    <Menu preventOverflow={true}>
       <MenuButton
         background="white"
         as={IconButton}
         aria-label="Options"
         icon={<Icon as={MdMenu} />}
-        size="sm"
+        size={menuSize}
       />
       <MenuList>
         {user && (

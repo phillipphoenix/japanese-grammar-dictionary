@@ -24,37 +24,40 @@ const Page: FC<PageProps> = ({ children, title, tabTitle, menu }) => {
         <title>{tabTitle || title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {menu && (
-        <Box position="absolute" top="10px" right="10px">
-          {menu}
-        </Box>
-      )}
-      <Container width={pageWidths} maxW={pageWidths} minH="100%" padding="0">
-        <Box p="5">
-          <Center>
-            <Heading
-              bgGradient="linear(to-br, pink.800, orange.400)"
-              bgClip="text"
-              fontWeight="extrabold"
-            >
-              {title}
-            </Heading>
-          </Center>
-        </Box>
-        <Box as="main">{children}</Box>
-        <Box as="footer" p="4">
-          <Box>
+      <Box>
+        {menu && (
+          <Box zIndex="100000" position="absolute" top="10px" left="10px">
+            {menu}
+          </Box>
+        )}
+        <Container width={pageWidths} maxW={pageWidths} minH="100%" padding="0">
+          <Box p="5">
             <Center>
-              <Text textAlign="center">Made with ☕ by Phillip</Text>
-            </Center>
-            <Center>
-              <Link href="/credits">
-                <Button mt="2">Go to credits</Button>
-              </Link>
+              <Heading
+                bgGradient="linear(to-br, pink.800, orange.400)"
+                bgClip="text"
+                fontWeight="extrabold"
+                textAlign="center"
+              >
+                {title}
+              </Heading>
             </Center>
           </Box>
-        </Box>
-      </Container>
+          <Box as="main">{children}</Box>
+          <Box as="footer" p="4">
+            <Box>
+              <Center>
+                <Text textAlign="center">Made with ☕ by Phillip</Text>
+              </Center>
+              <Center>
+                <Link href="/credits">
+                  <Button mt="2">Go to credits</Button>
+                </Link>
+              </Center>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
     </>
   );
 };
