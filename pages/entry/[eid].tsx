@@ -8,12 +8,13 @@ import { fetchEntry } from "../api/entry/[eid]";
 import { getEntries } from "../api/entries";
 import { MdArrowBack } from "react-icons/md";
 import Descriptor from "../../components/Descriptor/Descriptor";
+import DefaultMenu from "../../components/DefaultMenu/DefaultMenu";
 
 const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
 
   return (
-    <Page title="日本語 Grammar Entry" tabTitle="Entry: eid">
+    <Page title="日本語 Grammar Entry" tabTitle="Entry: eid" menu={<DefaultMenu />}>
       <div>
         <Link href="/">
           <Button leftIcon={<MdArrowBack />}>Back</Button>
