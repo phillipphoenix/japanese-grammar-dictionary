@@ -3,23 +3,27 @@ import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import styles from "../../styles/[eid].module.css";
 import Page from "../../components/Page";
-import { Box, Button, Divider, Heading } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Heading, Spacer } from "@chakra-ui/react";
 import { fetchEntry } from "../api/entry/[eid]";
 import { getEntries } from "../api/entries";
-import { MdArrowBack } from "react-icons/md";
+import { MdArrowBack, MdModeEdit } from "react-icons/md";
 import Descriptor from "../../components/Descriptor/Descriptor";
 import DefaultMenu from "../../components/DefaultMenu/DefaultMenu";
+import { useAuth } from "../../Providers/AuthProvider";
 
 const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
+  const { user } = useAuth();
 
   return (
     <Page title="日本語 Grammar Entry" tabTitle="Entry: eid" menu={<DefaultMenu />}>
-      <div>
+      <Flex>
         <Link href="/">
           <Button leftIcon={<MdArrowBack />}>Back</Button>
         </Link>
-      </div>
+        <Spacer />
+        {user && <Button leftIcon={<MdModeEdit />}>Edit entry</Button>}
+      </Flex>
 
       <div className={styles.cardList}>
         {!isFallback && entry && (
