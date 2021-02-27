@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
 import { ServiceAccount } from "firebase-admin";
 
-import serviceAccountJson from "./japanese-grammar-dictionary-firebase-adminsdk-a9rk7-bcdc47bb3c.json";
+import serviceAccountJson from "./firebaseAdminCredentials";
 
 const serviceAccount = serviceAccountJson as ServiceAccount;
 
