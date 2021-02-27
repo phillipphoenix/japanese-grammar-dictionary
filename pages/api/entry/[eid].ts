@@ -2,55 +2,31 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { Coda } from "coda-js";
-import {
-  DOC_ID,
-  ENTRIES_EXAMPLES,
-  ENTRIES_TABLE_ID,
-  EXAMPLES_TABLE_ID,
-  EXAMPLE_TRANSLATION,
-  mapToEntry,
-  mapToExample,
-} from "../../../utils/CodaUtils";
+import { firebase } from "../../../utils/firebaseClient";
 import { EntryDto } from "../../../types/api/entryDto";
 
-/**
- * Coda with API key.
- */
-const coda = new Coda("6aed1ad8-27fa-4f73-9576-26925d112a57");
+var db = firebase.firestore();
 
-export const getEntry = (entryId: string): Promise<EntryDto> => {
-  const entryRowPromise = coda.getRow(DOC_ID, ENTRIES_TABLE_ID, entryId, {
-    valueFormat: "simpleWithArrays",
-  });
+export const fetchEntry = async (entryId: string): Promise<EntryDto> => {
+  const ref = db.collection("entries");
+  const docRef = ref.doc(entryId);
 
-  const allExampleRowsPromise = coda.listRows(DOC_ID, EXAMPLES_TABLE_ID, {});
-
-  return Promise.all([entryRowPromise, allExampleRowsPromise]).then(
-    ([entryRow, allExampleRows]) => {
-      const entryExampleTranslations = <string[]>entryRow.values[ENTRIES_EXAMPLES];
-      const exampleRows = allExampleRows.filter((er) =>
-        entryExampleTranslations.includes(er.values[EXAMPLE_TRANSLATION])
-      );
-
-      const entry = mapToEntry(entryRow);
-      if (exampleRows && exampleRows.length > 0) {
-        const examples = exampleRows.map((er) => mapToExample(er));
-        entry.examples = {
-          en: examples,
-          da: examples,
-        };
-      }
-
-      return entry;
+  return docRef.get().then((doc) => {
+    if (!doc.exists) {
+      throw new Error(`Entry with ID ${entryId} was not found.`);
     }
-  );
+    return <EntryDto>{
+      ...doc.data(),
+      id: doc.id,
+    };
+  });
 };
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+// -- GET -- Fetch entry.
+const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   const entryId = <string>req.query.eid;
 
-  const entry = await getEntry(entryId);
+  const entry = await fetchEntry(entryId);
 
   if (!entry) {
     res.statusCode = 404;
@@ -58,5 +34,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } else {
     res.statusCode = 200;
     res.json(entry);
+  }
+};
+
+// -- POST -- Create entry
+
+// -- PUT -- Update entry
+
+// -- DELETE -- Delete entry
+
+// -- REQUEST RECEIVER --
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === "GET") {
+    getEntry(req, res);
+    return;
   }
 };

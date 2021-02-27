@@ -1,7 +1,33 @@
+import { useEffect } from "react";
 import Head from "next/head";
+import { analytics } from "../utils/firebaseClient";
 import "../styles/globals.css";
 
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { AuthProvider } from "../Providers/AuthProvider";
+
+// #f5f5f5
+
+// Version 1: Using objects
+const theme = extendTheme({
+  styles: {
+    global: {
+      // styles for the `body`
+      body: {
+        bg: "gray.100",
+      },
+    },
+  },
+});
+
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    // Init firebase analytics, if prod environment.
+    if (process.env.NODE_ENV === "production") {
+      analytics();
+    }
+  }, []);
+
   return (
     <>
       <Head>
@@ -14,7 +40,11 @@ function MyApp({ Component, pageProps }) {
         <meta name="apple-mobile-web-app-title" content="日本語 Grammar Dictionary" />
         <meta name="msapplication-starturl" content="/" />
       </Head>
-      <Component {...pageProps} />
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
+      </ChakraProvider>
     </>
   );
 }

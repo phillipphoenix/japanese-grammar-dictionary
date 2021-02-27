@@ -8,12 +8,21 @@
     "start": "next start"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.1.6",
+    "@emotion/react": "^11.1.4",
+    "@emotion/styled": "^11.0.0",
+    "@types/cookies": "^0.7.6",
     "coda-js": "^4.0.0",
+    "cookies": "^0.8.0",
+    "firebase": "^8.2.7",
+    "firebase-admin": "^9.5.0",
+    "framer-motion": "^3.2.2-rc.1",
     "next": "10.0.0",
     "next-pwa": "^5.0.0",
+    "nookies": "^2.5.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-loading-skeleton": "^2.1.1"
+    "react-icons": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
