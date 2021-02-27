@@ -33,24 +33,6 @@ const LogIn: FC = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        // Get the user's ID token as it is needed to exchange for a session cookie.
-        return user.getIdToken().then((idToken) => {
-          // Session login endpoint is queried and the session cookie is set.
-          // CSRF protection should be taken into account.
-          //const csrfToken = getCookie('csrfToken')
-
-          const body = {
-            idToken,
-            // csrfToken,
-          };
-          return fetch("api/auth/signin", {
-            method: "POST",
-            body: JSON.stringify(body),
-          });
-        });
-      })
       .then(() => {
         // Redirect to new page after succesfully signing in.
         push("/backoffice");

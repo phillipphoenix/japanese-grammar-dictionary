@@ -4,6 +4,7 @@ import { analytics } from "../utils/firebase";
 import "../styles/globals.css";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { AuthProvider } from "../Providers/AuthProvider";
 
 // #f5f5f5
 
@@ -40,7 +41,9 @@ function MyApp({ Component, pageProps }) {
         <meta name="msapplication-starturl" content="/" />
       </Head>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </ChakraProvider>
     </>
   );

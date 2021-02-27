@@ -27,17 +27,12 @@ const firebaseConfig = {
   measurementId: "G-GVBVS2V9J0",
 };
 
-try {
+// Only initialise, if not already done.
+if (typeof window !== "undefined" && !firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-} catch (err) {
-  if (!/already exists/.test(err.message)) {
-    console.error("Firebase initialization error", err.stack);
-  }
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+  (window as any).firebase = firebase;
 }
-
-// Part of session based auth.
-// As httpOnly cookies are to be used, do not persist any state client side.
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 
 const analytics = firebase.analytics;
 export { firebase, analytics };
