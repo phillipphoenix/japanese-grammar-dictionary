@@ -27,11 +27,26 @@ const firebaseConfig = {
   measurementId: "G-GVBVS2V9J0",
 };
 
-// Only initialise, if not already done.
-if (typeof window !== "undefined" && !firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
-  (window as any).firebase = firebase;
+// If in the browser check differently for if it is already initialised.
+if (process.browser) {
+  // Only initialise, if not already done.
+  if (typeof window !== "undefined" && !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    (window as any).firebase = firebase;
+  }
+}
+
+// If on the server initialise differently.
+if (!process.browser) {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+  } catch (err) {
+    if (!/already exists/.test(err.message)) {
+      console.error("Firebase initialization error", err.stack);
+    }
+  }
 }
 
 const analytics = firebase.analytics;

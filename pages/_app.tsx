@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Head from "next/head";
-import { analytics } from "../utils/firebase";
+import { analytics } from "../utils/firebaseClient";
 import "../styles/globals.css";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";

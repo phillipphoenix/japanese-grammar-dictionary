@@ -15,7 +15,7 @@ import {
   InputRightElement,
   VStack,
 } from "@chakra-ui/react";
-import { firebase } from "../utils/firebase";
+import { firebase } from "../utils/firebaseClient";
 
 const LogIn: FC = () => {
   const { push } = useRouter();
@@ -35,7 +35,7 @@ const LogIn: FC = () => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         // Redirect to new page after succesfully signing in.
-        push("/backoffice");
+        push("/");
       })
       .catch((err) => console.error(err))
       .then(() => {

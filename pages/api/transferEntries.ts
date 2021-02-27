@@ -2,7 +2,7 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { firebase } from "../../utils/firebase";
+import { firebase } from "../../utils/firebaseClient";
 
 import { Coda } from "coda-js";
 import {

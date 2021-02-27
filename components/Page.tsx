@@ -1,12 +1,13 @@
-import { Box, Button, Center, Container, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Container, Heading, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 //import styles from "./Page.module.css";
 
 export interface PageProps {
   title: string;
   tabTitle?: string;
+  menu?: ReactNode;
 }
 
 const pageWidths = [
@@ -16,13 +17,18 @@ const pageWidths = [
   "70%", // 62em+
 ];
 
-const Page: FC<PageProps> = ({ children, title, tabTitle }) => {
+const Page: FC<PageProps> = ({ children, title, tabTitle, menu }) => {
   return (
     <>
       <Head>
         <title>{tabTitle || title}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {menu && (
+        <Box position="absolute" top="10px" right="10px">
+          {menu}
+        </Box>
+      )}
       <Container width={pageWidths} maxW={pageWidths} minH="100%" padding="0">
         <Box p="5">
           <Center>
