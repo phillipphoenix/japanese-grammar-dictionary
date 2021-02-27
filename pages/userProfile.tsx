@@ -25,7 +25,7 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { MdAdd, MdMenu, MdPerson } from "react-icons/md";
+import { MdAdd, MdArrowBack, MdMenu, MdPerson } from "react-icons/md";
 import { useAuth } from "../Providers/AuthProvider";
 
 const UserProfile: FC = () => {
@@ -79,7 +79,7 @@ const UserProfile: FC = () => {
         <Box maxWidth={800}>
           <Box mb="1">
             <Link href="/">
-              <Button>Back</Button>
+              <Button leftIcon={<MdArrowBack />}>Back</Button>
             </Link>
           </Box>
           <Box p="5" shadow="md" bg="white" rounded="md">

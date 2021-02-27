@@ -1,51 +1,36 @@
 import { FC } from "react";
 import Link from "next/link";
 import Page from "../components/Page";
-import NarrowContainer from "../components/NarrowContainer";
 import styles from "../styles/Credits.module.css";
+import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
+import { MdArrowBack } from "react-icons/md";
 
 const Credits: FC = () => {
   return (
     <Page title="Credits" tabTitle="日本語 Grammar Dictionary">
-      <NarrowContainer>
-        <div className={styles.credits}>
-          <h2>
-            <Link href="/">Go to frontpage</Link>
-          </h2>
-          <div>
-            <h2>日本語 Grammar Dictionary:</h2>
-            <p>Created by Phillip Phoelich.</p>
-            <p>
-              The project started late 2020. The main parts of the site were finished during
-              december 2020, but entries are added continuously.
-            </p>
-          </div>
-          <div>
-            <h2>Icons:</h2>
-            <div>
-              Icons made by{" "}
-              <a href="https://www.flaticon.com/authors/freepik" title="Freepik" target="_blank">
-                Freepik
-              </a>{" "}
-              from{" "}
-              <a href="https://www.flaticon.com/" title="Flaticon" target="_blank">
-                www.flaticon.com
-              </a>
-            </div>
-            <div>
-              Specific icons are found at{" "}
-              <a
-                href="https://www.flaticon.com/packs/ui-super-basic"
-                title="ui-super-pack"
-                target="_blank"
-              >
-                UI Super Pack
-              </a>
-              .
-            </div>
-          </div>
-        </div>
-      </NarrowContainer>
+      <Center>
+        <Box maxWidth={800}>
+          <Box mb="1">
+            <Link href="/">
+              <Button leftIcon={<MdArrowBack />}>Back</Button>
+            </Link>
+          </Box>
+          <Box mb="5" p={5} shadow="md" bg="white" rounded="md">
+            <Heading size="md" mb="2">
+              日本語 Grammar Dictionary
+            </Heading>
+            <Text>Created by Phillip Phoelich</Text>
+            <Heading size="md" mt="3" mb="2">
+              About the project
+            </Heading>
+            <Text>
+              The project started late 2020. The first prototype of the site was finished during
+              december 2020. During January and February of 2021, there was a change in UI,
+              authentication was added with a user profile.
+            </Text>
+          </Box>
+        </Box>
+      </Center>
     </Page>
   );
 };

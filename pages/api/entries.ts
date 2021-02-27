@@ -11,10 +11,13 @@ var db = firebase.firestore();
 export const getEntries = async (): Promise<EntryDto[]> => {
   const ref = db.collection("entries");
   const snapshot = await ref.get();
-  const entries = snapshot.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-  }));
+  const entries = snapshot.docs.map(
+    (doc) =>
+      <EntryDto>{
+        ...doc.data(),
+        id: doc.id,
+      }
+  );
 
   return entries;
 };
