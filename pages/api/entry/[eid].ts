@@ -37,8 +37,6 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-// -- POST -- Create entry
-
 // -- PUT -- Update entry
 
 // -- DELETE -- Delete entry

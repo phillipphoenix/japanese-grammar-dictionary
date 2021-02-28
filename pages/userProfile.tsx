@@ -27,6 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { MdAdd, MdArrowBack, MdMenu, MdPerson } from "react-icons/md";
 import { useAuth } from "../Providers/AuthProvider";
+import DefaultMenu from "../components/DefaultMenu/DefaultMenu";
 
 const UserProfile: FC = () => {
   const { push } = useRouter();
@@ -116,11 +117,12 @@ const UserProfile: FC = () => {
   );
 };
 
+export default UserProfile;
+
 // --- SERVER SIDE ---
 
 import nookies from "nookies";
 import { firebaseAdmin } from "../utils/api/firebaseAdmin";
-import DefaultMenu from "../components/DefaultMenu/DefaultMenu";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
@@ -153,5 +155,3 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 };
-
-export default UserProfile;
