@@ -8,14 +8,15 @@ var db = firebase.firestore();
 
 // -- POST -- Create entry
 const postEntry = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { title, descriptors, description, tags } = JSON.parse(req.body);
+  const { title, descriptors, summary, description, tags } = JSON.parse(req.body);
 
   const newEntry = {
     title,
     descriptors,
-    summary: description,
-    description,
+    summary: description || summary,
+    description: description || summary,
     tags,
+    createdAt: new Date(),
   };
 
   const ref = db.collection("entries");

@@ -52,7 +52,9 @@ const DefaultMenu: FC<DefaultMenuProps> = ({ logoutDestination }) => {
       <MenuList>
         {user && (
           <>
-            <MenuItem icon={<Icon as={MdAdd} />}>Create new entry</MenuItem>
+            <Link href="/entry/create">
+              <MenuItem icon={<Icon as={MdAdd} />}>Create new entry</MenuItem>
+            </Link>
             <Link href="/userProfile">
               <MenuItem icon={<Icon as={MdPerson} />}>User profile</MenuItem>
             </Link>
