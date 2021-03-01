@@ -3,7 +3,18 @@ import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import styles from "../../styles/[eid].module.css";
 import Page from "../../components/Page";
-import { Box, Button, Divider, Flex, Heading, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Spacer,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { fetchEntry } from "../api/entry/[eid]";
 import { getEntries } from "../api/entries";
 import { MdArrowBack, MdModeEdit } from "react-icons/md";
@@ -15,6 +26,9 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
   const { user } = useAuth();
 
+  // Formatter used to correctly display the dates.
+  const dateFormatter = new Intl.DateTimeFormat("da");
+
   return (
     <Page title="日本語 Grammar Entry" tabTitle="Entry: eid" menu={<DefaultMenu />}>
       <Flex>
@@ -22,13 +36,17 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
           <Button leftIcon={<MdArrowBack />}>Back</Button>
         </Link>
         <Spacer />
-        {user && <Button leftIcon={<MdModeEdit />}>Edit entry</Button>}
+        {user && (
+          <Link href={`/entry/${entry.id}/edit`}>
+            <Button leftIcon={<MdModeEdit />}>Edit entry</Button>
+          </Link>
+        )}
       </Flex>
 
       <div className={styles.cardList}>
         {!isFallback && entry && (
-          <>
-            <Box mb="5" p={5} shadow="md" bg="white" rounded="md">
+          <VStack spacing="5">
+            <Box width="100%" p={5} shadow="md" bg="white" rounded="md">
               <Heading as="h2" size="md" className={styles.cardHeader}>
                 {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
               </Heading>
@@ -36,7 +54,7 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
               <Box>{entry.summary}</Box>
             </Box>
             {entry.examples && entry.examples.length > 0 && (
-              <Box mb="5" p={5} shadow="md" bg="white" rounded="md">
+              <Box width="100%" p={5} shadow="md" bg="white" rounded="md">
                 <Heading as="h2" size="md">
                   Examples
                 </Heading>
@@ -54,12 +72,35 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
                 </Box>
               </Box>
             )}
-          </>
+            <Box width="100%">
+              <HStack
+                spacing="2"
+                divider={
+                  <Center height="30px">
+                    <Divider orientation="vertical" />
+                  </Center>
+                }
+              >
+                {entry.createdAt && (
+                  <Text fontSize="sm">
+                    Created: {dateFormatter.format(new Date(entry.createdAt))}
+                  </Text>
+                )}
+                {entry.updatedAt && (
+                  <Text fontSize="sm">
+                    Last updated: {dateFormatter.format(new Date(entry.updatedAt))}
+                  </Text>
+                )}
+              </HStack>
+            </Box>
+          </VStack>
         )}
       </div>
     </Page>
   );
 };
+
+export default Entry;
 
 // Server side render and cache content.
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -83,5 +124,3 @@ export const getStaticProps: GetStaticProps = async (context) => {
     revalidate: 60 * 10, // Rerender every 10 minutes (upon request).
   };
 };
-
-export default Entry;

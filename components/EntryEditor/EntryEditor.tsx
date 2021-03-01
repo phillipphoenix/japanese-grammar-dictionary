@@ -30,12 +30,19 @@ import { MdAdd } from "react-icons/md";
 
 interface EntryEditorProps {
   entry?: EntryData;
+  submitBtnText: string;
   onSubmit: (values: EntryData) => void;
   cancelLink?: string;
   cancelFunc?: () => void;
 }
 
-export const EntryEditor: FC<EntryEditorProps> = ({ entry, onSubmit, cancelLink, cancelFunc }) => {
+export const EntryEditor: FC<EntryEditorProps> = ({
+  entry,
+  submitBtnText,
+  onSubmit,
+  cancelLink,
+  cancelFunc,
+}) => {
   // --- INPUT VALIDATION ---
   if (!!cancelLink && !!cancelFunc) {
     console.error(
@@ -57,7 +64,9 @@ export const EntryEditor: FC<EntryEditorProps> = ({ entry, onSubmit, cancelLink,
   const [description, setDescription] = useState<string>(entry?.summary || "");
   const [tag, tagProps, setTag] = useStringInputHandler("");
 
-  const tagsParts = entry?.tags?.split(",");
+  const tagsParts = entry?.tags
+    ?.split(",")
+    .filter((tag) => ![titleJp, titleEn, descriptors].includes(tag));
   const [tags, setTags] = useState<string[]>(tagsParts || []);
 
   /**
@@ -100,9 +109,11 @@ export const EntryEditor: FC<EntryEditorProps> = ({ entry, onSubmit, cancelLink,
     const tagStr = [titleJp, titleEn, descriptors, ...tags].join(",");
 
     const entryData: EntryData = {
+      id: entry?.id || undefined, // Get ID from given entry, if it exists (only for editing).
       title: `${titleJp} - ${titleEn}`,
       descriptors,
       summary: description,
+      description,
       tags: tagStr,
       examples: entry?.examples || [],
     };
@@ -117,7 +128,6 @@ export const EntryEditor: FC<EntryEditorProps> = ({ entry, onSubmit, cancelLink,
       onSubmit={(evt) => {
         evt.preventDefault();
         const entryObj = createEntryObj();
-        console.log("CALLING ON SUBMIT WITH", entryObj);
         onSubmit(entryObj);
       }}
     >
@@ -227,8 +237,8 @@ export const EntryEditor: FC<EntryEditorProps> = ({ entry, onSubmit, cancelLink,
       <Flex mt="2">
         <Spacer />
         <HStack spacing={2}>
-          <Button type="submit" colorScheme="green" leftIcon={<Icon as={MdAdd} />}>
-            Create
+          <Button type="submit" colorScheme="green">
+            {submitBtnText}
           </Button>
           {cancelLink && !cancelFunc && (
             <Link href={cancelLink}>

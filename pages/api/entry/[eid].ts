@@ -2,20 +2,18 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { firebase } from "../../../utils/firebaseClient";
-import { EntryDto } from "../../../types/api/entryDto";
+import firestoreDb from "../../../utils/api/firestoreDb";
+import { EntryData } from "../../../types/components/entryData";
 
-var db = firebase.firestore();
-
-export const fetchEntry = async (entryId: string): Promise<EntryDto> => {
-  const ref = db.collection("entries");
-  const docRef = ref.doc(entryId);
+export const fetchEntry = async (entryId: string): Promise<EntryData> => {
+  const docRef = firestoreDb.entries.doc(entryId);
 
   return docRef.get().then((doc) => {
     if (!doc.exists) {
       throw new Error(`Entry with ID ${entryId} was not found.`);
     }
-    return <EntryDto>{
+
+    return <EntryData>{
       ...doc.data(),
       id: doc.id,
     };
@@ -38,6 +36,21 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // -- PUT -- Update entry
+const putEntry = async (req: NextApiRequest, res: NextApiResponse) => {
+  const entryId = <string>req.query.eid;
+  const entry = { ...JSON.parse(req.body), id: entryId } as EntryData;
+
+  if (!entry) {
+    res.statusCode = 404;
+    res.statusMessage = `No data was given with which to update the entry.`;
+  }
+
+  const docRef = firestoreDb.entries.doc(entryId);
+  docRef.set(entry);
+
+  res.statusCode = 200;
+  res.json(entry);
+};
 
 // -- DELETE -- Delete entry
 
@@ -46,5 +59,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     getEntry(req, res);
     return;
+  } else if (req.method === "PUT") {
+    putEntry(req, res);
+    return;
   }
+
+  res.statusCode = 405;
+  res.statusMessage = "Method Not Allowed";
+  return;
 };

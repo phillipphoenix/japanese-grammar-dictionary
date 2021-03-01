@@ -1,27 +1,39 @@
 import { FC } from "react";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
-import Page from "../../components/Page";
-import DefaultMenu from "../../components/DefaultMenu/DefaultMenu";
+import { GetServerSideProps, InferGetStaticPropsType } from "next";
+import Page from "../../../components/Page";
+import DefaultMenu from "../../../components/DefaultMenu/DefaultMenu";
 import { Box, Center, Divider, Heading, useToast } from "@chakra-ui/react";
-import { EntryEditor } from "../../components/EntryEditor/EntryEditor";
+import { EntryEditor } from "../../../components/EntryEditor/EntryEditor";
 
-const Create: FC = () => {
+const Edit: FC<{ entry }> = ({ entry }: InferGetStaticPropsType<typeof getServerSideProps>) => {
   const toast = useToast();
-  const { push } = useRouter();
+  const { push, query } = useRouter();
+  const { eid } = query;
+
+  console.log("ENTRY", entry);
 
   /**
    * Submit the create entry form.
    */
 
-  const createEntry = (entry: EntryData) => {
-    // Make sure the ID of the entry is undefined.
-    entry.id = undefined;
+  const editEntry = (entry: EntryData) => {
+    // Make sure that entry has an ID, as we cannot update without an ID.
+    if (!entry.id) {
+      console.error("The entry did not have an ID, so we don't know what to update.");
+      toast({
+        title: "An error occurred",
+        description:
+          "It was impossible to update the entry. Please refresh the page and try again.",
+        status: "error",
+      });
+      return;
+    }
 
-    console.log("CREATING ENTRY");
+    console.log("EDIT ENTRY");
 
-    fetch("/api/entry/create", {
-      method: "POST",
+    fetch(`/api/entry/${entry.id}`, {
+      method: "PUT",
       body: JSON.stringify(entry),
     })
       .then((res) => {
@@ -31,7 +43,7 @@ const Create: FC = () => {
         throw Error(res.statusText);
       })
       .then((res) => {
-        console.log("ENTRY CREATED!", res);
+        console.log("ENTRY UPDATED!", res);
         push(`/entry/${res.id}`);
       })
       .catch((err) => {
@@ -45,16 +57,21 @@ const Create: FC = () => {
 
   return (
     <Page
-      title="Create new entry"
-      tabTitle="Create entry - 日本語 Grammar Dictionary"
+      title="Edit entry"
+      tabTitle="Edit entry - 日本語 Grammar Dictionary"
       menu={<DefaultMenu />}
     >
       <Center>
         <Box maxWidth={800}>
           <Box p="5" shadow="md" bg="white" rounded="md">
-            <Heading>Add a new entry</Heading>
+            <Heading>Edit existing entry</Heading>
             <Divider mt="2" mb="2" />
-            <EntryEditor submitBtnText="Create" onSubmit={createEntry} cancelLink="/" />
+            <EntryEditor
+              entry={entry}
+              submitBtnText="Update"
+              onSubmit={editEntry}
+              cancelLink={`/entry/${eid}`}
+            />
           </Box>
         </Box>
       </Center>
@@ -62,15 +79,16 @@ const Create: FC = () => {
   );
 };
 
-export default Create;
+export default Edit;
 
 // --- SERVER SIDE ---
 
 import nookies from "nookies";
-import { firebaseAdmin } from "../../utils/api/firebaseAdmin";
-import { EntryData } from "../../types/components/entryData";
+import { firebaseAdmin } from "../../../utils/api/firebaseAdmin";
+import { EntryData } from "../../../types/components/entryData";
+import { fetchEntry } from "../../api/entry/[eid]";
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<{ entry: EntryData }> = async (ctx) => {
   try {
     const cookies = nookies.get(ctx);
     console.log(JSON.stringify(cookies, null, 2));
@@ -80,8 +98,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // the user is authenticated!
     // FETCH STUFF HERE
 
+    const eid = ctx.params.eid as string;
+
+    const entry = await fetchEntry(eid);
+
     return {
-      props: {},
+      props: { entry },
     };
   } catch (err) {
     // either the `token` cookie didn't exist

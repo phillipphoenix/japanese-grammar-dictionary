@@ -1,23 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { NextApiRequest, NextApiResponse } from "next";
+import { EntryData } from "../../types/components/entryData";
 
-import { firebase } from "../../utils/firebaseClient";
+import firestoreDb from "../../utils/api/firestoreDb";
 
-import { EntryDto } from "../../types/api/entryDto";
-
-var db = firebase.firestore();
-
-export const getEntries = async (): Promise<EntryDto[]> => {
-  const ref = db.collection("entries");
-  const snapshot = await ref.get();
-  const entries = snapshot.docs.map(
-    (doc) =>
-      <EntryDto>{
-        ...doc.data(),
-        id: doc.id,
-      }
-  );
+export const getEntries = async (): Promise<EntryData[]> => {
+  const snapshot = await firestoreDb.entries.get();
+  const entries = snapshot.docs.map((doc) => doc.data());
 
   return entries;
 };

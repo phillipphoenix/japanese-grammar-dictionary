@@ -1,27 +1,25 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { NextApiRequest, NextApiResponse } from "next";
+import { EntryData } from "../../../types/components/entryData";
 
-import { firebase } from "../../../utils/firebaseClient";
-
-var db = firebase.firestore();
+import firestoreDb from "../../../utils/api/firestoreDb";
 
 // -- POST -- Create entry
 const postEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   const { title, descriptors, summary, description, tags } = JSON.parse(req.body);
 
-  const newEntry = {
+  const newEntry: EntryData = {
     title,
     descriptors,
     summary: description || summary,
     description: description || summary,
     tags,
-    createdAt: new Date(),
+    examples: [],
   };
 
-  const ref = db.collection("entries");
   try {
-    const result = await ref.add(newEntry);
+    const result = await firestoreDb.entries.add(newEntry);
     res.statusCode = 200;
     res.json({ id: result.id, message: "Entry created succesfully!" });
     return;
