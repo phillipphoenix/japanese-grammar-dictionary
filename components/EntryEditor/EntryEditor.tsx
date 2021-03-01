@@ -11,7 +11,6 @@ import {
   FormHelperText,
   FormLabel,
   HStack,
-  Icon,
   Input,
   InputGroup,
   InputRightAddon,
