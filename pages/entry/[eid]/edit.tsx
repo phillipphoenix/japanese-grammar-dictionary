@@ -95,6 +95,8 @@ export const getServerSideProps: GetServerSideProps<{ entry: EntryData }> = asyn
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
     const { uid, email } = token;
 
+    // TODO: If user display name is not set, redirect to user profile and use notification system to display error.
+
     // the user is authenticated!
     // FETCH STUFF HERE
 

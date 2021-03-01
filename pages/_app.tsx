@@ -5,6 +5,7 @@ import "../styles/globals.css";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { AuthProvider } from "../Providers/AuthProvider";
+import Notification from "../components/notification";
 
 // #f5f5f5
 
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps }) {
       <ChakraProvider theme={theme}>
         <AuthProvider>
           <Component {...pageProps} />
+          <Notification />
         </AuthProvider>
       </ChakraProvider>
     </>
