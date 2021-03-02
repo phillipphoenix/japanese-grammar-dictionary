@@ -6,13 +6,22 @@ import Page from "../../components/Page";
 import {
   Box,
   Button,
+  ButtonGroup,
   Center,
+  Collapse,
   Divider,
+  Editable,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   HStack,
+  IconButton,
+  Input,
   Spacer,
   Text,
+  Textarea,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { fetchEntry } from "../api/entry/[eid]";
@@ -21,10 +30,27 @@ import { MdArrowBack, MdModeEdit } from "react-icons/md";
 import Descriptor from "../../components/Descriptor/Descriptor";
 import DefaultMenu from "../../components/DefaultMenu/DefaultMenu";
 import { useAuth } from "../../Providers/AuthProvider";
+import ExampleEditable from "../../components/ExampleEditable";
+import { useState } from "react";
+import { useStringInputHandler, useTextAreaHandler } from "../../hooks/useInputHandler";
 
 const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
   const { user } = useAuth();
+  const toast = useToast();
+
+  const [isAddingExample, setIsAddingExample] = useState<boolean>(false);
+  const [sentence, sentenceProps] = useStringInputHandler("");
+  const [translation, translationProps] = useStringInputHandler("");
+  const [explanation, explanationProps] = useTextAreaHandler("");
+
+  const onUpdateExample = (example) => {
+    toast({
+      title: example.sentence,
+      description: "Example has been updated!",
+      status: "success",
+    });
+  };
 
   // Formatter used to correctly display the dates.
   const dateFormatter = new Intl.DateTimeFormat("da");
@@ -53,23 +79,56 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
               <Divider mt="2" mb="2" />
               <Box>{entry.summary}</Box>
             </Box>
-            {entry.examples && entry.examples.length > 0 && (
+            {(user || (entry.examples && entry.examples.length > 0)) && (
               <Box width="100%" p={5} shadow="md" bg="white" rounded="md">
                 <Heading as="h2" size="md">
                   Examples
                 </Heading>
-                <Divider mt="2" mb="2" />
-                <Box>
+                <Divider mt="2" mb="4" />
+                <VStack spacing="6">
                   {entry.examples.map((exmp) => (
-                    <div key={exmp.id} className={styles.example}>
-                      <p>{exmp.sentence}</p>
-                      <p>{exmp.translation}</p>
-                      {!exmp.explanation && (
-                        <p className={styles.explanation}>{exmp.explanation}</p>
-                      )}
-                    </div>
+                    <ExampleEditable
+                      key={exmp.id}
+                      example={exmp}
+                      canEdit={!!user}
+                      onSubmit={onUpdateExample}
+                    />
                   ))}
-                </Box>
+                </VStack>
+                {user && (
+                  <>
+                    <Collapse in={!isAddingExample}>
+                      <ButtonGroup width="100%" justifyContent="flex-end">
+                        <Button onClick={() => setIsAddingExample(true)}>Add new example</Button>
+                      </ButtonGroup>
+                    </Collapse>
+                    <Collapse in={isAddingExample}>
+                      <VStack mt="10" spacing="2">
+                        <Heading width="100%" size="md">
+                          Add new example
+                        </Heading>
+                        <FormControl>
+                          <FormLabel>Sentence</FormLabel>
+                          <Input type="text" {...sentenceProps} />
+                        </FormControl>
+                        <FormControl>
+                          <FormLabel>Translation</FormLabel>
+                          <Input type="text" {...translationProps} />
+                        </FormControl>
+                        <FormControl>
+                          <FormLabel>Explanation</FormLabel>
+                          <Textarea {...explanationProps} />
+                        </FormControl>
+                        <ButtonGroup width="100%" justifyContent="flex-end">
+                          <Button colorScheme="green">Add example</Button>
+                          <Button colorScheme="red" onClick={() => setIsAddingExample(false)}>
+                            Cancel
+                          </Button>
+                        </ButtonGroup>
+                      </VStack>
+                    </Collapse>
+                  </>
+                )}
               </Box>
             )}
             <Box width="100%">

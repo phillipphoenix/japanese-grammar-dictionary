@@ -8,7 +8,7 @@ const entryConverter: firestore.FirestoreDataConverter<EntryData> = {
     const newDate = new Date();
     return {
       ...entryRest,
-      createdAt: entryRest.createdAt || newDate,
+      createdAt: entryRest.createdAt ? new Date(entryRest.createdAt) : newDate,
       updatedAt: newDate,
     };
   },

@@ -14,24 +14,15 @@ import {
   FormLabel,
   Heading,
   Input,
-  Spacer,
-  Text,
-  Icon,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { MdAdd, MdArrowBack, MdMenu, MdPerson } from "react-icons/md";
+import { MdArrowBack } from "react-icons/md";
 import { useAuth } from "../Providers/AuthProvider";
 import DefaultMenu from "../components/DefaultMenu/DefaultMenu";
 
 const UserProfile: FC = () => {
-  const { push } = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   /** Used for instance to indicate that the user is logging out or other async action. */
   const [isUserInputLocked, setIsUserInputLocked] = useState<boolean>(false);
 
@@ -51,6 +42,7 @@ const UserProfile: FC = () => {
       .updateProfile({
         displayName,
       })
+      .then(() => refreshUser())
       .then(() => {
         toast({
           title: "Profile updated!",
@@ -90,7 +82,7 @@ const UserProfile: FC = () => {
             <Divider mt="2" mb="2" />
             <form onSubmit={onUpdateUserProfile}>
               <VStack>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Display name</FormLabel>
                   <Input
                     type="text"

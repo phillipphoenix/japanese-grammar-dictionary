@@ -1,6 +1,7 @@
 import { FC, useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { notiDescParam, notiStatusParam, notiTitleParam } from "../utils/notificationUtils";
 
 /**
  * Looks for the the query params described below and creates a toast notification, if found.
@@ -14,22 +15,23 @@ const Notification: FC = () => {
 
   useEffect(() => {
     // Check if there are any query messages in the URL.
+    // query param names are fetched from notification utils.
     const {
-      notificationTitle,
-      notificationDescription,
-      notificationStatus,
+      [notiTitleParam]: notiTitle,
+      [notiDescParam]: notiDesc,
+      [notiStatusParam]: notiStatus,
       ...queryRest
     }: {
-      notificationTitle: string;
-      notificationDescription: string;
-      notificationStatus: undefined | "info" | "success" | "warning" | "error";
+      [notiTitleParam]: string;
+      [notiDescParam]: string;
+      [notiStatusParam]: undefined | "info" | "success" | "warning" | "error";
     } = query as any;
 
-    if (!!notificationTitle) {
+    if (!!notiTitle) {
       toast({
-        title: notificationTitle,
-        description: notificationDescription,
-        status: notificationStatus,
+        title: notiTitle,
+        description: notiDesc,
+        status: notiStatus,
         isClosable: true,
       });
       // Remove query params.

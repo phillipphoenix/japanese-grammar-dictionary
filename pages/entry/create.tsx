@@ -18,8 +18,6 @@ const Create: FC = () => {
     // Make sure the ID of the entry is undefined.
     entry.id = undefined;
 
-    console.log("CREATING ENTRY");
-
     fetch("/api/entry/create", {
       method: "POST",
       body: JSON.stringify(entry),
@@ -31,8 +29,12 @@ const Create: FC = () => {
         throw Error(res.statusText);
       })
       .then((res) => {
-        console.log("ENTRY CREATED!", res);
-        push(`/entry/${res.id}`);
+        const notificationParams = getNotificationQueryParams({
+          title: "すごい!",
+          description: "You've successfully created an entry!",
+          status: "success",
+        });
+        push(`/entry/${res.id}${notificationParams}`);
       })
       .catch((err) => {
         toast({
@@ -69,13 +71,29 @@ export default Create;
 import nookies from "nookies";
 import { firebaseAdmin } from "../../utils/api/firebaseAdmin";
 import { EntryData } from "../../types/components/entryData";
+import { getNotificationQueryParams } from "../../utils/notificationUtils";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const cookies = nookies.get(ctx);
     console.log(JSON.stringify(cookies, null, 2));
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-    const { uid, email } = token;
+    const { uid, name } = token;
+
+    // If no display name set, redirect as we like users to have a display name, before creating / editing content.
+    if (!name) {
+      const notificationParams = getNotificationQueryParams({
+        title: "Missing display name",
+        description: "A display name is required before creating or editing content.",
+      });
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/userProfile${notificationParams}`,
+        },
+        props: {} as never,
+      };
+    }
 
     // TODO: If user display name is not set, redirect to user profile and use notification system to display error.
 

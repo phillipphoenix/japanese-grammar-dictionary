@@ -2,8 +2,18 @@ import React, { useState, useEffect, useContext, createContext } from "react";
 import { firebase } from "../utils/firebaseClient";
 import nookies from "nookies";
 
-const AuthContext = createContext<{ user: firebase.User | null }>({
+export interface AuthContextProps {
+  user: firebase.User | null;
+  /**
+   * Call this to refresh current user data.
+   * This is useful, when updating for instance display name or email or the like.
+   */
+  refreshUser: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextProps>({
   user: null,
+  refreshUser: null,
 });
 
 export function AuthProvider({ children }: any) {
@@ -32,17 +42,19 @@ export function AuthProvider({ children }: any) {
     });
   }, []);
 
+  const refreshUser = async () => {
+    console.log(`refreshing token...`);
+    const user = firebase.auth().currentUser;
+    if (user) await user.getIdToken(true);
+  };
+
   // Force refresh the token every 10 minutes.
   useEffect(() => {
-    const handle = setInterval(async () => {
-      console.log(`refreshing token...`);
-      const user = firebase.auth().currentUser;
-      if (user) await user.getIdToken(true);
-    }, 10 * 60 * 1000);
+    const handle = setInterval(refreshUser, 10 * 60 * 1000);
     return () => clearInterval(handle);
   }, []);
 
-  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, refreshUser }}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {

@@ -11,8 +11,6 @@ const Edit: FC<{ entry }> = ({ entry }: InferGetStaticPropsType<typeof getServer
   const { push, query } = useRouter();
   const { eid } = query;
 
-  console.log("ENTRY", entry);
-
   /**
    * Submit the create entry form.
    */
@@ -30,8 +28,6 @@ const Edit: FC<{ entry }> = ({ entry }: InferGetStaticPropsType<typeof getServer
       return;
     }
 
-    console.log("EDIT ENTRY");
-
     fetch(`/api/entry/${entry.id}`, {
       method: "PUT",
       body: JSON.stringify(entry),
@@ -43,8 +39,12 @@ const Edit: FC<{ entry }> = ({ entry }: InferGetStaticPropsType<typeof getServer
         throw Error(res.statusText);
       })
       .then((res) => {
-        console.log("ENTRY UPDATED!", res);
-        push(`/entry/${res.id}`);
+        const notificationParams = getNotificationQueryParams({
+          title: "やった!",
+          description: "The entry was updated successfully!",
+          status: "success",
+        });
+        push(`/entry/${res.id}${notificationParams}`);
       })
       .catch((err) => {
         toast({
@@ -87,15 +87,29 @@ import nookies from "nookies";
 import { firebaseAdmin } from "../../../utils/api/firebaseAdmin";
 import { EntryData } from "../../../types/components/entryData";
 import { fetchEntry } from "../../api/entry/[eid]";
+import { getNotificationQueryParams } from "../../../utils/notificationUtils";
 
 export const getServerSideProps: GetServerSideProps<{ entry: EntryData }> = async (ctx) => {
   try {
     const cookies = nookies.get(ctx);
     console.log(JSON.stringify(cookies, null, 2));
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
-    const { uid, email } = token;
+    const { uid, name } = token;
 
-    // TODO: If user display name is not set, redirect to user profile and use notification system to display error.
+    // If no display name set, redirect as we like users to have a display name, before creating / editing content.
+    if (!name) {
+      const notificationParams = getNotificationQueryParams({
+        title: "Missing display name",
+        description: "A display name is required before creating or editing content.",
+      });
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/userProfile${notificationParams}`,
+        },
+        props: {} as never,
+      };
+    }
 
     // the user is authenticated!
     // FETCH STUFF HERE

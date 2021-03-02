@@ -108,6 +108,7 @@ export const EntryEditor: FC<EntryEditorProps> = ({
     const tagStr = [titleJp, titleEn, descriptors, ...tags].join(",");
 
     const entryData: EntryData = {
+      ...entry,
       id: entry?.id || undefined, // Get ID from given entry, if it exists (only for editing).
       title: `${titleJp} - ${titleEn}`,
       descriptors,
