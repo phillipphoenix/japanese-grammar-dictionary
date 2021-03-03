@@ -202,128 +202,134 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
       <div className={styles.cardList}>
         {!isFallback && entry && (
-          <VStack spacing="5">
-            <Box width="100%" p={5} shadow="md" bg="white" rounded="md">
-              <Heading as="h2" size="md" className={styles.cardHeader}>
-                {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
-              </Heading>
-              <Divider mt="2" mb="2" />
-              <Box>{entry.summary}</Box>
-            </Box>
-            {(user || (entry.examples && entry.examples.length > 0)) && (
+          <>
+            <VStack spacing="5">
               <Box width="100%" p={5} shadow="md" bg="white" rounded="md">
-                <Heading as="h2" size="md">
-                  Examples
+                <Heading as="h2" size="md" className={styles.cardHeader}>
+                  {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
                 </Heading>
-                <Divider mt="2" mb="4" />
-                <VStack spacing="6">
-                  {examples.map((exmp, index) => (
-                    <ExampleEditable
-                      key={index}
-                      example={exmp}
-                      canEdit={!!user}
-                      onSubmit={(updatedExmp) => onEditExample(updatedExmp, index)}
-                      onDelete={() => onDeleteExample(index)}
-                    />
-                  ))}
-                </VStack>
-                {user && (
-                  <>
-                    <Collapse in={!isAddingExample}>
-                      <ButtonGroup width="100%" justifyContent="flex-end">
-                        <Button onClick={() => setIsAddingExample(true)}>Add new example</Button>
-                      </ButtonGroup>
-                    </Collapse>
-                    <Collapse in={isAddingExample}>
-                      <form
-                        onSubmit={(evt) => {
-                          evt.preventDefault();
-                          onCreateExample();
-                        }}
-                      >
-                        <VStack mt="10" spacing="2">
-                          <Heading width="100%" size="md">
-                            Add new example
-                          </Heading>
-                          <FormControl isRequired>
-                            <FormLabel>Sentence</FormLabel>
-                            <Input type="text" {...sentenceProps} />
-                          </FormControl>
-                          <FormControl isRequired>
-                            <FormLabel>Translation</FormLabel>
-                            <Input type="text" {...translationProps} />
-                          </FormControl>
-                          <FormControl>
-                            <FormLabel>Explanation</FormLabel>
-                            <Textarea {...explanationProps} />
-                          </FormControl>
-                          <ButtonGroup width="100%" justifyContent="flex-end">
-                            <Button type="submit" colorScheme="green">
-                              Add example
-                            </Button>
-                            <Button colorScheme="red" onClick={() => setIsAddingExample(false)}>
-                              Cancel
-                            </Button>
-                          </ButtonGroup>
-                        </VStack>
-                      </form>
-                    </Collapse>
-                  </>
-                )}
+                <Divider mt="2" mb="2" />
+                <Box>{entry.summary}</Box>
               </Box>
-            )}
-            <Box width="100%">
-              <HStack
-                spacing="2"
-                divider={
-                  <Center height="30px">
-                    <Divider orientation="vertical" />
-                  </Center>
-                }
-              >
-                {entry.createdAt && (
-                  <Text fontSize="sm">
-                    Created: {dateFormatter.format(new Date(entry.createdAt))}
-                  </Text>
-                )}
-                {entry.updatedAt && (
-                  <Text fontSize="sm">
-                    Last updated: {dateFormatter.format(new Date(entry.updatedAt))}
-                  </Text>
-                )}
-              </HStack>
-            </Box>
-          </VStack>
+              {(user || (entry.examples && entry.examples.length > 0)) && (
+                <Box width="100%" p={5} shadow="md" bg="white" rounded="md">
+                  <Heading as="h2" size="md">
+                    Examples
+                  </Heading>
+                  <Divider mt="2" mb="4" />
+                  <VStack spacing="6">
+                    {examples.map((exmp, index) => (
+                      <ExampleEditable
+                        key={index}
+                        example={exmp}
+                        canEdit={!!user}
+                        onSubmit={(updatedExmp) => onEditExample(updatedExmp, index)}
+                        onDelete={() => onDeleteExample(index)}
+                      />
+                    ))}
+                  </VStack>
+                  {user && (
+                    <>
+                      <Collapse in={!isAddingExample}>
+                        <ButtonGroup width="100%" justifyContent="flex-end">
+                          <Button onClick={() => setIsAddingExample(true)}>Add new example</Button>
+                        </ButtonGroup>
+                      </Collapse>
+                      <Collapse in={isAddingExample}>
+                        <form
+                          onSubmit={(evt) => {
+                            evt.preventDefault();
+                            onCreateExample();
+                          }}
+                        >
+                          <VStack mt="10" spacing="2">
+                            <Heading width="100%" size="md">
+                              Add new example
+                            </Heading>
+                            <FormControl isRequired>
+                              <FormLabel>Sentence</FormLabel>
+                              <Input type="text" {...sentenceProps} />
+                            </FormControl>
+                            <FormControl isRequired>
+                              <FormLabel>Translation</FormLabel>
+                              <Input type="text" {...translationProps} />
+                            </FormControl>
+                            <FormControl>
+                              <FormLabel>Explanation</FormLabel>
+                              <Textarea {...explanationProps} />
+                            </FormControl>
+                            <ButtonGroup width="100%" justifyContent="flex-end">
+                              <Button type="submit" colorScheme="green">
+                                Add example
+                              </Button>
+                              <Button colorScheme="red" onClick={() => setIsAddingExample(false)}>
+                                Cancel
+                              </Button>
+                            </ButtonGroup>
+                          </VStack>
+                        </form>
+                      </Collapse>
+                    </>
+                  )}
+                </Box>
+              )}
+              <Box width="100%">
+                <HStack
+                  spacing="2"
+                  divider={
+                    <Center height="30px">
+                      <Divider orientation="vertical" />
+                    </Center>
+                  }
+                >
+                  {entry.createdAt && (
+                    <Text fontSize="sm">
+                      Created: {dateFormatter.format(new Date(entry.createdAt))}
+                    </Text>
+                  )}
+                  {entry.updatedAt && (
+                    <Text fontSize="sm">
+                      Last updated: {dateFormatter.format(new Date(entry.updatedAt))}
+                    </Text>
+                  )}
+                </HStack>
+              </Box>
+            </VStack>
+            <AlertDialog
+              isOpen={isAlertOpen}
+              leastDestructiveRef={cancelAlertRef}
+              onClose={onAlertClose}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                    Delete Entry?
+                  </AlertDialogHeader>
+
+                  <AlertDialogBody>
+                    <Text>Are you sure you want to delete the following entry?</Text>
+                    <Divider mt="2" mb="2" />
+                    <Text fontWeight="bold">
+                      {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
+                    </Text>
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <ButtonGroup spacing={3}>
+                      <Button ref={cancelAlertRef} onClick={onAlertClose}>
+                        Cancel
+                      </Button>
+                      <Button colorScheme="red" onClick={() => deleteEntry(entry.id)}>
+                        Delete
+                      </Button>
+                    </ButtonGroup>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
+          </>
         )}
       </div>
-      <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelAlertRef} onClose={onAlertClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Entry?
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              <Text>Are you sure you want to delete the following entry?</Text>
-              <Divider mt="2" mb="2" />
-              <Text fontWeight="bold">
-                {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
-              </Text>
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <ButtonGroup spacing={3}>
-                <Button ref={cancelAlertRef} onClick={onAlertClose}>
-                  Cancel
-                </Button>
-                <Button colorScheme="red" onClick={() => deleteEntry(entry.id)}>
-                  Delete
-                </Button>
-              </ButtonGroup>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
     </Page>
   );
 };
