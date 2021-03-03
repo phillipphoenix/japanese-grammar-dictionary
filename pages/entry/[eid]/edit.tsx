@@ -12,9 +12,8 @@ const Edit: FC<{ entry }> = ({ entry }: InferGetStaticPropsType<typeof getServer
   const { eid } = query;
 
   /**
-   * Submit the create entry form.
+   * Submit the edit entry form.
    */
-
   const editEntry = (entry: EntryData) => {
     // Make sure that entry has an ID, as we cannot update without an ID.
     if (!entry.id) {
