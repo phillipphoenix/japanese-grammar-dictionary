@@ -43,6 +43,7 @@ const putEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!entry) {
     res.statusCode = 404;
     res.statusMessage = `No data was given with which to update the entry.`;
+    return;
   }
 
   const docRef = firestoreDb.entries.doc(entryId);
