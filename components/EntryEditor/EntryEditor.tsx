@@ -105,7 +105,7 @@ export const EntryEditor: FC<EntryEditorProps> = ({
   // --- SUBMITTING DATA ---
 
   const createEntryObj = useCallback(() => {
-    const tagStr = [titleJp, titleEn, descriptors, ...tags].join(",");
+    const tagStr = [titleJp, titleEn, descriptors, ...tags].join(",").toLowerCase();
 
     const entryData: EntryData = {
       ...entry,

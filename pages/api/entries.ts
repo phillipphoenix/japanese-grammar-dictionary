@@ -15,6 +15,8 @@ export const getEntries = async (): Promise<EntryData[]> => {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const entries = await getEntries();
 
+  console.log("ENTRIES", entries);
+
   const entryData = {
     entries,
   };

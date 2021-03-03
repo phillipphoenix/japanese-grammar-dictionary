@@ -12,57 +12,48 @@ import {
   InputLeftElement,
   Button,
   Spacer,
+  Icon,
   Text,
   VStack,
-  Icon,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
+  Center,
 } from "@chakra-ui/react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { getEntries } from "./api/entries";
 
-import { MdSearch, MdLibraryBooks, MdAdd, MdMenu, MdPerson } from "react-icons/md";
+import { MdSearch, MdLibraryBooks } from "react-icons/md";
 import Descriptor from "../components/Descriptor/Descriptor";
-import { useAuth } from "../Providers/AuthProvider";
-import { firebase } from "../utils/firebaseClient";
-import { useRouter } from "next/router";
 import DefaultMenu from "../components/DefaultMenu/DefaultMenu";
+import { EntryData } from "../types/components/entryData";
 
-const filterEntries = (allEntries, searchTerm) => {
-  // If search is empty, take 10 first entries.
+import "ts-array-ext/shuffle";
+
+const filterEntries = (allEntries: EntryData[], searchTerm: string) => {
+  if (!allEntries || allEntries.length === 0) {
+    return [];
+  }
+
+  // If search is empty, take 10 random entries.
   if (!searchTerm) {
-    return allEntries.slice(0, 10);
+    // Shuffle to get random entries.
+    return [...allEntries].shuffle().slice(0, 10);
   }
   // Only return the 10 first entries that match the search.
   const searchTermLower = searchTerm.toLowerCase();
   const foundEntries = allEntries.filter((entry) => {
     return (
-      entry.tags.includes(searchTermLower) ||
-      entry.title.includes(searchTermLower) ||
-      entry.descriptors.includes(searchTermLower) ||
-      entry.summary.includes(searchTermLower)
+      !!entry &&
+      (entry.tags?.includes(searchTermLower) ||
+        entry.title?.includes(searchTermLower) ||
+        entry.descriptors?.includes(searchTermLower) ||
+        entry.summary?.includes(searchTermLower))
     );
   });
   return foundEntries.slice(0, 10);
 };
 
 export default function Home({ entries }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { user } = useAuth();
-  const { reload } = useRouter();
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
-
-  const onLogOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        reload();
-      });
-  };
 
   // Update filtered entries based on entry list and search.
   useEffect(() => {
@@ -91,25 +82,34 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
           />
         </InputGroup>
       </Box>
+      {!search && (
+        <Center>
+          <Text mt="-5" mb="5" color="gray.400" fontSize="xs">
+            Displaying randomised entries
+          </Text>
+        </Center>
+      )}
       {filteredEntries.length > 0 && (
         <Box id="entry-list" className={styles.entryList}>
-          {filteredEntries.map((entry) => (
-            <Box key={entry.id} mb="5" p={5} shadow="md" bg="white" rounded="md">
-              <Heading as="h2" size="md" className={styles.cardHeader}>
-                {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
-              </Heading>
-              <Divider mt="2" mb="2" />
-              <Box>{entry.summary}</Box>
-              <Flex p="5px">
-                <Spacer />
-                <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
-                  <Button rightIcon={<MdLibraryBooks />} colorScheme="gray">
-                    Read more
-                  </Button>
-                </Link>
-              </Flex>
-            </Box>
-          ))}
+          <VStack width="100%" spacing="5" alignItems="stretch">
+            {filteredEntries.map((entry) => (
+              <Box key={entry.id} p={5} shadow="md" bg="white" rounded="md">
+                <Heading as="h2" size="md" className={styles.cardHeader}>
+                  {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
+                </Heading>
+                <Divider mt="2" mb="2" />
+                <Box>{entry.summary}</Box>
+                <Flex p="5px">
+                  <Spacer />
+                  <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
+                    <Button rightIcon={<MdLibraryBooks />} colorScheme="gray">
+                      Read more
+                    </Button>
+                  </Link>
+                </Flex>
+              </Box>
+            ))}
+          </VStack>
         </Box>
       )}
       {filteredEntries.length === 0 && (
@@ -122,7 +122,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
 }
 
 // Server side render with all entries at build time.
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<{ entries: EntryData[] }> = async (context) => {
   const entries = await getEntries();
 
   return {

@@ -5,7 +5,7 @@ import "../styles/globals.css";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { AuthProvider } from "../Providers/AuthProvider";
-import Notification from "../components/notification";
+import Notification from "../components/Notification";
 
 // #f5f5f5
 

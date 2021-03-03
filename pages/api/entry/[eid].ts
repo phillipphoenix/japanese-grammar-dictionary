@@ -53,15 +53,28 @@ const putEntry = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // -- DELETE -- Delete entry
+const deleteEntry = async (req: NextApiRequest, res: NextApiResponse) => {
+  const entryId = <string>req.query.eid;
+
+  // Get entry to delete. We will return it after deletion.
+  const entry = await fetchEntry(entryId);
+
+  // Get doc ref and delete it.
+  const docRef = firestoreDb.entries.doc(entryId);
+  docRef.delete();
+
+  res.statusCode = 200;
+  res.json(entry);
+};
 
 // -- REQUEST RECEIVER --
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
-    getEntry(req, res);
-    return;
+    return getEntry(req, res);
   } else if (req.method === "PUT") {
-    putEntry(req, res);
-    return;
+    return putEntry(req, res);
+  } else if (req.method === "DELETE") {
+    return deleteEntry(req, res);
   }
 
   res.statusCode = 405;
