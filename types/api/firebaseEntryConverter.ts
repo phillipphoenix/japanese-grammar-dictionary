@@ -3,8 +3,12 @@ import { firestore } from "firebase-admin";
 
 const entryConverter: firestore.FirestoreDataConverter<EntryData> = {
   toFirestore(entry: EntryData): firestore.DocumentData {
-    // Remove the ID from the object.
-    const { id, ...entryRest } = entry;
+    // Check if there is a updatedByUid attribute and throw exception if there is not.
+    if (!entry.updatedByUid) {
+      throw Error("A user ID is required on the object, before it can be saved.");
+    }
+    // Remove the ID and updatedBy (only save display name) from the object.
+    const { id, updatedBy, ...entryRest } = entry;
     const newDate = new Date();
     return {
       ...entryRest,

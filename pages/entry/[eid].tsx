@@ -292,6 +292,7 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
                       Last updated: {dateFormatter.format(new Date(entry.updatedAt))}
                     </Text>
                   )}
+                  {entry.updatedBy && <Text fontSize="sm">Updated by: {entry.updatedBy}</Text>}
                 </HStack>
               </Box>
             </VStack>

@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import firestoreDb from "../../../utils/api/firestoreDb";
 import { EntryData } from "../../../types/components/entryData";
+import { userEntryConverter } from "../../../types/api/userEntryConverter";
+import { verifyUser } from "../../../utils/api/verifyUser";
 
 export const fetchEntry = async (entryId: string): Promise<EntryData> => {
   const docRef = firestoreDb.entries.doc(entryId);
@@ -13,10 +15,14 @@ export const fetchEntry = async (entryId: string): Promise<EntryData> => {
       throw new Error(`Entry with ID ${entryId} was not found.`);
     }
 
-    return <EntryData>{
-      ...doc.data(),
-      id: doc.id,
-    };
+    return userEntryConverter.fromFirestore(doc.data()).then((entry) => {
+      console.log("ENTRT WITH USER:\n", entry);
+
+      return {
+        ...entry,
+        id: doc.id,
+      };
+    });
   });
 };
 
@@ -37,8 +43,17 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
 
 // -- PUT -- Update entry
 const putEntry = async (req: NextApiRequest, res: NextApiResponse) => {
+  const verifiedUser = await verifyUser(req, res);
+  if (!verifiedUser) {
+    return;
+  }
+
   const entryId = <string>req.query.eid;
-  const entry = { ...JSON.parse(req.body), id: entryId } as EntryData;
+  const entry = {
+    ...JSON.parse(req.body),
+    id: entryId,
+    updatedByUid: verifiedUser.uid,
+  } as EntryData;
 
   if (!entry) {
     res.statusCode = 404;
@@ -49,12 +64,21 @@ const putEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   const docRef = firestoreDb.entries.doc(entryId);
   docRef.set(entry);
 
-  res.statusCode = 200;
-  res.json(entry);
+  // Return the user with the display name set correctly.
+  return userEntryConverter.fromFirestore(entry).then((entryWithUser) => {
+    console.log("ENTRY BEFORE SAVING:", entry, "\n\nENTRY AFTER FETCHING:", entryWithUser);
+    res.statusCode = 200;
+    res.json(entryWithUser);
+  });
 };
 
 // -- DELETE -- Delete entry
 const deleteEntry = async (req: NextApiRequest, res: NextApiResponse) => {
+  const verifiedUser = await verifyUser(req, res);
+  if (!verifiedUser) {
+    return;
+  }
+
   const entryId = <string>req.query.eid;
 
   // Get entry to delete. We will return it after deletion.
@@ -64,8 +88,10 @@ const deleteEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   const docRef = firestoreDb.entries.doc(entryId);
   docRef.delete();
 
-  res.statusCode = 200;
-  res.json(entry);
+  return userEntryConverter.fromFirestore(entry).then((entryWithUser) => {
+    res.statusCode = 200;
+    res.json(entryWithUser);
+  });
 };
 
 // -- REQUEST RECEIVER --

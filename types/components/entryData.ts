@@ -10,4 +10,6 @@ export type EntryData = {
   examples: ExampleData[];
   createdAt?: string;
   updatedAt?: string;
+  updatedBy?: string; // User display name (is not saved to Firebase).
+  updatedByUid?: string; // User ID of the one to either create or last update the entry.
 };
