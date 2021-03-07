@@ -16,8 +16,6 @@ export const fetchEntry = async (entryId: string): Promise<EntryData> => {
     }
 
     return userEntryConverter.fromFirestore(doc.data()).then((entry) => {
-      console.log("ENTRT WITH USER:\n", entry);
-
       return {
         ...entry,
         id: doc.id,
@@ -66,7 +64,6 @@ const putEntry = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Return the user with the display name set correctly.
   return userEntryConverter.fromFirestore(entry).then((entryWithUser) => {
-    console.log("ENTRY BEFORE SAVING:", entry, "\n\nENTRY AFTER FETCHING:", entryWithUser);
     res.statusCode = 200;
     res.json(entryWithUser);
   });

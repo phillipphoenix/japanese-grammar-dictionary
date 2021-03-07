@@ -26,7 +26,6 @@ const postEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   try {
-    console.log("CREATING NOW!");
     const result = await firestoreDb.entries.add(newEntry);
     res.statusCode = 200;
     res.json({ id: result.id, message: "Entry created succesfully!" });

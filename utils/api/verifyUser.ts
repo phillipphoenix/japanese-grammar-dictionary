@@ -23,8 +23,6 @@ export const verifyUser = async (
     .then((token) => {
       const { uid, name, email, picture, phone_number } = token;
 
-      console.log("USER FOUNT", token);
-
       if (!uid) {
         throw Error("User ID was not found.");
       }
