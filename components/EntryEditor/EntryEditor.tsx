@@ -3,6 +3,10 @@ import Link from "next/link";
 import { EntryData } from "../../types/components/entryData";
 import { useStringInputHandler } from "../../hooks/useInputHandler";
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Button,
   Divider,
@@ -141,6 +145,14 @@ export const EntryEditor: FC<EntryEditorProps> = ({
       }}
     >
       <VStack spacing={2}>
+        <Alert status="info">
+          <AlertIcon />
+          <AlertTitle mr={2}>Tip!</AlertTitle>
+          <AlertDescription>
+            In most input fields you can use the syntax {"{勉強}"}(べんきょう) to add furigana to
+            kanji.
+          </AlertDescription>
+        </Alert>
         <FormControl isRequired>
           <FormLabel>Title Japanese</FormLabel>
           <Input type="text" placeholder="V(plain)ようになる" {...titleJpProps} />
