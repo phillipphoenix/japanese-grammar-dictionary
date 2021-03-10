@@ -26,7 +26,7 @@ const Page: FC<PageProps> = ({ children, title, tabTitle, menu }) => {
       </Head>
       <Box>
         {menu && (
-          <Box zIndex="100000" position="absolute" top="10px" left="10px">
+          <Box zIndex="100" position="absolute" top="10px" left="10px">
             {menu}
           </Box>
         )}

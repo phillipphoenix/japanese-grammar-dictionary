@@ -6,6 +6,7 @@ import "../styles/globals.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { AuthProvider } from "../Providers/AuthProvider";
 import Notification from "../components/Notification";
+import CookieNotifier from "../components/CookieNotifier";
 
 // #f5f5f5
 
@@ -45,6 +46,7 @@ function MyApp({ Component, pageProps }) {
         <AuthProvider>
           <Component {...pageProps} />
           <Notification />
+          <CookieNotifier />
         </AuthProvider>
       </ChakraProvider>
     </>
