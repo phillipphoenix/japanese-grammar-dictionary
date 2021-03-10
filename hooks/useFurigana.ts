@@ -27,7 +27,7 @@ const convert = (
   let match;
 
   while ((match = patternRegex.exec(text))) {
-    const html = ["<ruby>"];
+    const html = !skipFurigana ? ["<ruby>"] : [];
     const phrase = match[0];
 
     let secondMatch;
@@ -43,7 +43,9 @@ const convert = (
       }
     }
 
-    html.push("</ruby>");
+    if (!skipFurigana) {
+      html.push("</ruby>");
+    }
 
     text = match.input.replace(phrase, html.join(""));
   }
