@@ -42,6 +42,7 @@ import { useStringInputHandler, useTextAreaHandler } from "../../hooks/useInputH
 import { EntryData } from "../../types/components/entryData";
 import { ExampleData } from "../../types/components/exampleData";
 import { getNotificationQueryParams } from "../../utils/notificationUtils";
+import { useFurigana } from "../../hooks/useFurigana";
 
 const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback, push } = useRouter();
@@ -49,6 +50,8 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const toast = useToast();
 
   const [examples, setExamples] = useState<ExampleData[]>(entry?.examples || []);
+
+  const [convertFurigana] = useFurigana();
 
   // Delete alert box.
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -206,10 +209,15 @@ const Entry = ({ entry }: InferGetStaticPropsType<typeof getStaticProps>) => {
             <VStack spacing="5">
               <Box width="100%" p={5} shadow="md" bg="white" rounded="md">
                 <Heading as="h2" size="md" className={styles.cardHeader}>
-                  {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
+                  <span dangerouslySetInnerHTML={{ __html: convertFurigana(entry.title) }}></span>{" "}
+                  {entry.descriptors && <Descriptor text={entry.descriptors} />}
                 </Heading>
                 <Divider mt="2" mb="2" />
-                <Box>{entry.summary}</Box>
+                <Box
+                  dangerouslySetInnerHTML={{
+                    __html: convertFurigana(entry.description || entry.summary),
+                  }}
+                ></Box>
               </Box>
               {(user || (entry.examples && entry.examples.length > 0)) && (
                 <Box width="100%" p={5} shadow="md" bg="white" rounded="md">

@@ -26,6 +26,7 @@ import DefaultMenu from "../components/DefaultMenu/DefaultMenu";
 import { EntryData } from "../types/components/entryData";
 
 import "ts-array-ext/shuffle";
+import { useFurigana } from "../hooks/useFurigana";
 
 const filterEntries = (allEntries: EntryData[], searchTerm: string) => {
   if (!allEntries || allEntries.length === 0) {
@@ -54,6 +55,7 @@ const filterEntries = (allEntries: EntryData[], searchTerm: string) => {
 export default function Home({ entries }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
+  const [convertFurigana] = useFurigana();
 
   // Update filtered entries based on entry list and search.
   useEffect(() => {
@@ -82,7 +84,7 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
           />
         </InputGroup>
       </Box>
-      {!search && (
+      {!search.trim() && (
         <Center>
           <Text mt="-5" mb="5" color="gray.400" fontSize="xs">
             Displaying randomised entries
@@ -95,7 +97,8 @@ export default function Home({ entries }: InferGetStaticPropsType<typeof getStat
             {filteredEntries.map((entry) => (
               <Box key={entry.id} p={5} shadow="md" bg="white" rounded="md">
                 <Heading as="h2" size="md" className={styles.cardHeader}>
-                  {entry.title} {entry.descriptors && <Descriptor text={entry.descriptors} />}
+                  <span dangerouslySetInnerHTML={{ __html: convertFurigana(entry.title) }} />{" "}
+                  {entry.descriptors && <Descriptor text={entry.descriptors} />}
                 </Heading>
                 <Divider mt="2" mb="2" />
                 <Box>{entry.summary}</Box>

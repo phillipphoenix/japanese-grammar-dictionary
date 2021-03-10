@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import Descriptor from "../../components/Descriptor/Descriptor";
 import { MdAdd } from "react-icons/md";
+import { useFurigana } from "../../hooks/useFurigana";
 
 interface EntryEditorProps {
   entry?: EntryData;
@@ -49,6 +50,9 @@ export const EntryEditor: FC<EntryEditorProps> = ({
     );
   }
 
+  // --- FURIGANA ---
+  const [convertFurigana] = useFurigana();
+
   // --- STATE MANAGEMENT ---
 
   const titleParts = entry?.title?.split(" - ") || null;
@@ -65,7 +69,10 @@ export const EntryEditor: FC<EntryEditorProps> = ({
 
   const tagsParts = entry?.tags
     ?.split(",")
-    .filter((tag) => ![titleJp, titleEn, descriptors].includes(tag));
+    .filter(
+      (tag) =>
+        ![convertFurigana(titleJp, { skipFurigana: true }), titleEn, descriptors].includes(tag)
+    );
   const [tags, setTags] = useState<string[]>(tagsParts || []);
 
   /**
@@ -105,7 +112,9 @@ export const EntryEditor: FC<EntryEditorProps> = ({
   // --- SUBMITTING DATA ---
 
   const createEntryObj = useCallback(() => {
-    const tagStr = [titleJp, titleEn, descriptors, ...tags].join(",").toLowerCase();
+    const tagStr = [convertFurigana(titleJp, { skipFurigana: true }), titleEn, descriptors, ...tags]
+      .join(",")
+      .toLowerCase();
 
     const entryData: EntryData = {
       ...entry,
@@ -159,7 +168,8 @@ export const EntryEditor: FC<EntryEditorProps> = ({
         <Box width="100%">
           <FormLabel>Title preview</FormLabel>
           <Text>
-            {titleJp} - {titleEn} <Descriptor text={descriptors} />
+            <span dangerouslySetInnerHTML={{ __html: convertFurigana(titleJp) }} /> - {titleEn}{" "}
+            <Descriptor text={descriptors} />
           </Text>
         </Box>
         <Divider mt="2" mb="2" />
@@ -205,7 +215,12 @@ export const EntryEditor: FC<EntryEditorProps> = ({
           {titleJp && (
             <WrapItem>
               <Tag>
-                <TagLabel color="gray.400">{titleJp}</TagLabel>
+                <TagLabel
+                  color="gray.400"
+                  dangerouslySetInnerHTML={{
+                    __html: convertFurigana(titleJp, { skipFurigana: true }),
+                  }}
+                ></TagLabel>
               </Tag>
             </WrapItem>
           )}

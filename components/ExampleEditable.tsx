@@ -24,6 +24,7 @@ import {
 import { MdCheck, MdClose, MdDelete, MdModeEdit } from "react-icons/md";
 import { useStringInputHandler, useTextAreaHandler } from "../hooks/useInputHandler";
 import { ExampleData } from "../types/components/exampleData";
+import { useFurigana } from "../hooks/useFurigana";
 
 export interface ExampleEditableProps {
   example: ExampleData;
@@ -33,6 +34,7 @@ export interface ExampleEditableProps {
 }
 
 const ExampleEditable: FC<ExampleEditableProps> = ({ example, canEdit, onSubmit, onDelete }) => {
+  const [convertFurigana] = useFurigana();
   const [sentence, sentenceProps, setSentence] = useStringInputHandler(example.sentence);
   const [translation, translationProps, setTranslation] = useStringInputHandler(
     example.translation
@@ -87,7 +89,10 @@ const ExampleEditable: FC<ExampleEditableProps> = ({ example, canEdit, onSubmit,
               <Box flexGrow={1}>
                 {!props.isEditing ? (
                   <>
-                    <Text fontWeight="bold">{sentence}</Text>
+                    <Text
+                      fontWeight="bold"
+                      dangerouslySetInnerHTML={{ __html: convertFurigana(sentence) }}
+                    ></Text>
                     <Text>{example.translation}</Text>
                     {example.explanation && (
                       <Text mt="2" fontStyle="italic">
