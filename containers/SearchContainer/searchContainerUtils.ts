@@ -2,8 +2,17 @@ import "ts-array-ext/shuffle";
 import { EntryData } from "../../types/components/entryData";
 
 export type FilterEntriesOptions = {
+  /**
+   * Current page to get.
+   */
   page: number;
+  /**
+   * Amount of items per page (default is 9).
+   */
   pageSize: number;
+  /**
+   * When no search query given, should the filter return random entries (shuffled) or just in default order?
+   */
   shuffleWhenNoSearch: boolean;
 };
 
