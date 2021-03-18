@@ -1,17 +1,46 @@
 import "ts-array-ext/shuffle";
 import { EntryData } from "../../types/components/entryData";
 
-export const filterEntries = (allEntries: EntryData[], searchTerm: string) => {
+export type FilterEntriesOptions = {
+  page: number;
+  pageSize: number;
+  shuffleWhenNoSearch: boolean;
+};
+
+export type FilterEntriesData = {
+  pageEntries: EntryData[];
+  pages: number;
+  totalEntries: number;
+};
+
+export const filterEntries = (
+  allEntries: EntryData[],
+  searchTerm: string,
+  { page = 0, pageSize = 9, shuffleWhenNoSearch = true }: Partial<FilterEntriesOptions> = {}
+): FilterEntriesData => {
   if (!allEntries || allEntries.length === 0) {
-    return [];
+    return {
+      pageEntries: [],
+      pages: 0,
+      totalEntries: 0,
+    };
   }
 
-  // If search is empty, take 10 random entries.
+  const currentStartingEntry = page * pageSize;
+  const currentEndingEntry = currentStartingEntry + pageSize;
+
+  // If search is empty, take some random entries (based on page number and size).
   if (!searchTerm) {
-    // Shuffle to get random entries.
-    return [...allEntries].shuffle().slice(0, 10);
+    const allCopiedEntries = shuffleWhenNoSearch ? [...allEntries].shuffle() : [...allEntries];
+    const pageEntries = allCopiedEntries.slice(currentStartingEntry, currentEndingEntry);
+
+    return {
+      pageEntries,
+      pages: Math.ceil(allCopiedEntries.length / pageSize),
+      totalEntries: allCopiedEntries.length,
+    };
   }
-  // Only return the 10 first entries that match the search.
+  // Only return entries that match the search (based on page number and size).
   const searchTermLower = searchTerm.toLowerCase();
   const foundEntries = allEntries.filter((entry) => {
     return (
@@ -22,5 +51,12 @@ export const filterEntries = (allEntries: EntryData[], searchTerm: string) => {
         entry.summary?.includes(searchTermLower))
     );
   });
-  return foundEntries.slice(0, 10);
+
+  const pageEntries = foundEntries.slice(currentStartingEntry, currentEndingEntry);
+
+  return {
+    pageEntries,
+    pages: Math.ceil(foundEntries.length / pageSize),
+    totalEntries: foundEntries.length,
+  };
 };

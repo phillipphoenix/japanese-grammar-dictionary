@@ -23,6 +23,10 @@ import {
   VStack,
   Center,
   SimpleGrid,
+  ButtonGroup,
+  Stack,
+  HStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { MdSearch, MdLibraryBooks } from "react-icons/md";
 import Page from "../../components/Page";
@@ -41,12 +45,18 @@ const SearchContainer: FC<SearchContainerProps> = ({ entries }) => {
   const [search, setSearch] = useState<string>("");
   const [filteredEntries, setFilteredEntries] = useState([]);
   const [convertFurigana] = useFurigana();
+  const [page, setPage] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
+  const buttonSize = useBreakpointValue({ base: "xs", sm: "sm" });
 
   // Update filtered entries based on entry list and search.
   useEffect(() => {
     const trimmedSearch = search.trim();
-    setFilteredEntries(filterEntries(entries, trimmedSearch));
-  }, [entries, search]);
+    const filteredEntriesData = filterEntries(entries, trimmedSearch, { page });
+    setFilteredEntries(filteredEntriesData.pageEntries);
+    setTotalPages(filteredEntriesData.pages);
+  }, [entries, search, page]);
 
   return (
     <Page
@@ -77,31 +87,78 @@ const SearchContainer: FC<SearchContainerProps> = ({ entries }) => {
         </Center>
       )}
       {filteredEntries.length > 0 && (
-        <Box id="entry-list" className={styles.entryList}>
-          <SimpleGrid columns={[1, 1, 2, 2, 3]} spacingX="2" spacingY="2">
-            {/* <VStack width="100%" spacing="5" alignItems="stretch"> */}
-            {filteredEntries.map((entry) => (
-              <Flex key={entry.id} direction="column" p={5} shadow="md" bg="white" rounded="md">
-                <Heading as="h2" size="md" className={styles.cardHeader}>
-                  <span dangerouslySetInnerHTML={{ __html: convertFurigana(entry.title) }} />{" "}
-                  {entry.descriptors && <Descriptor text={entry.descriptors} />}
-                </Heading>
-                <Divider mt="2" mb="2" />
-                <Text noOfLines={2}>{entry.summary}</Text>
-                <Spacer />
-                <Flex p="5px">
+        <VStack spacing="5">
+          <Box id="entry-list" className={styles.entryList}>
+            <SimpleGrid columns={[1, 1, 2, 2, 3]} spacingX="2" spacingY="2">
+              {/* <VStack width="100%" spacing="5" alignItems="stretch"> */}
+              {filteredEntries.map((entry) => (
+                <Flex key={entry.id} direction="column" p={5} shadow="md" bg="white" rounded="md">
+                  <Heading as="h2" size="md" className={styles.cardHeader}>
+                    <span dangerouslySetInnerHTML={{ __html: convertFurigana(entry.title) }} />{" "}
+                    {entry.descriptors && <Descriptor text={entry.descriptors} />}
+                  </Heading>
+                  <Divider mt="2" mb="2" />
+                  <Text noOfLines={2}>{entry.summary}</Text>
                   <Spacer />
-                  <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
-                    <Button rightIcon={<MdLibraryBooks />} colorScheme="gray">
-                      Read more
-                    </Button>
-                  </Link>
+                  <Flex p="5px">
+                    <Spacer />
+                    <Link href={`/entry/${encodeURIComponent(entry.id)}`}>
+                      <Button rightIcon={<MdLibraryBooks />} colorScheme="gray">
+                        Read more
+                      </Button>
+                    </Link>
+                  </Flex>
                 </Flex>
-              </Flex>
-            ))}
-            {/* </VStack> */}
-          </SimpleGrid>
-        </Box>
+              ))}
+              {/* </VStack> */}
+            </SimpleGrid>
+          </Box>
+          <Stack direction={{ base: "column", sm: "row" }}>
+            <HStack>
+              <Button
+                colorScheme="blue"
+                size={buttonSize}
+                minWidth={{ base: "75px", sm: "100px" }}
+                disabled={page <= 0}
+                onClick={() => setPage(0)}
+              >
+                First
+              </Button>
+              <Button
+                colorScheme="blue"
+                size={buttonSize}
+                minWidth={{ base: "75px", sm: "100px" }}
+                disabled={page <= 0}
+                onClick={() => setPage((page) => page - 1)}
+              >
+                Previous
+              </Button>
+            </HStack>
+            <Box pl="2" pr="2" fontWeight="bold">
+              <Center>{page + 1}</Center>
+            </Box>
+            <HStack>
+              <Button
+                colorScheme="blue"
+                size={buttonSize}
+                minWidth={{ base: "75px", sm: "100px" }}
+                disabled={page >= totalPages - 1}
+                onClick={() => setPage((page) => page + 1)}
+              >
+                Next
+              </Button>
+              <Button
+                colorScheme="blue"
+                size={buttonSize}
+                minWidth={{ base: "75px", sm: "100px" }}
+                disabled={page >= totalPages - 1}
+                onClick={() => setPage(totalPages - 1)}
+              >
+                Last
+              </Button>
+            </HStack>
+          </Stack>
+        </VStack>
       )}
       {filteredEntries.length === 0 && (
         <div className={styles.noEntriesFoundContainer}>
