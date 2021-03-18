@@ -14,6 +14,6 @@ export const getStaticProps: GetStaticProps<{ entries: EntryData[] }> = async (c
 
   return {
     props: { entries },
-    revalidate: 60 * 1, // Rerender every 1 minutes (upon request).
+    revalidate: 1, // Rerender every 1 seconds (upon request).
   };
 };

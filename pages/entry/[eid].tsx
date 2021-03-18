@@ -364,6 +364,6 @@ export const getStaticProps: GetStaticProps<{ entry: EntryData }> = async (conte
 
   return {
     props: { entry },
-    revalidate: 60 * 10, // Rerender every 10 minutes (upon request).
+    revalidate: 1, // Rerender every 1 seconds (upon request).
   };
 };
