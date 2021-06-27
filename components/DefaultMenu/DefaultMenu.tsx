@@ -12,7 +12,7 @@ import {
   MenuList,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { MdAdd, MdMenu, MdPerson } from "react-icons/md";
+import { MdAdd, MdDashboard, MdMenu, MdPerson } from "react-icons/md";
 
 interface DefaultMenuProps {
   /**
@@ -57,6 +57,9 @@ const DefaultMenu: FC<DefaultMenuProps> = ({ logoutDestination }) => {
             </Link>
             <Link href="/userProfile">
               <MenuItem icon={<Icon as={MdPerson} />}>User profile</MenuItem>
+            </Link>
+            <Link href="/dashboard">
+              <MenuItem icon={<Icon as={MdDashboard} />}>User dashboard</MenuItem>
             </Link>
             <MenuItem onClick={onLogOut}>Log out</MenuItem>
           </>
