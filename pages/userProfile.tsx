@@ -1,6 +1,5 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import Page from "../components/Page";
 import {

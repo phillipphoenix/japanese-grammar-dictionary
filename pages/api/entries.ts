@@ -15,8 +15,32 @@ export const getEntries = async (): Promise<EntryData[]> => {
   return Promise.all(entryPromises);
 };
 
+type GetEntriesFilters = {
+  noExamples?: boolean;
+};
+
+export const getEntriesWithFilter = async (filters: GetEntriesFilters): Promise<EntryData[]> => {
+  // Check if any filters are set. If not, just return all entries.
+  if (Object.keys(filters).length == 0) {
+    return getEntries();
+  }
+
+  const snapshot = await firestoreDb.entries.get();
+  const entryPromises = snapshot.docs.reduce((acc, doc) => {
+    if ((doc.get("examples") as []).length == 0) {
+      return [...acc, userEntryConverter.fromFirestore(doc.data())];
+    }
+
+    return acc;
+  }, []);
+
+  return Promise.all(entryPromises);
+};
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const entries = await getEntries();
+  const noExamples = req.query.noExamples ? Boolean(req.query.noExamples) : undefined;
+
+  const entries = await getEntriesWithFilter({ noExamples });
 
   const entryData = {
     entries,
